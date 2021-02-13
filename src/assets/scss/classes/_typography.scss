@@ -1,0 +1,39 @@
+.h100 {
+  font-size: 14px;
+  line-height: 21px;
+}
+.h200 {
+  font-size: 16px;
+  line-height: 24px;
+
+  &.bold {
+    font-family: 'SpaceMyriadGeoBold', arial, sans-serif;
+  }
+
+  &.caps {
+    font-family: 'SpaceMyriadGeoMtavruli', arial, sans-serif;
+  }
+
+  &.bold.caps {
+    font-family: 'SpaceMyriadGeoMtavruliBold', arial, sans-serif;
+  }
+}
+.h300 {
+  font-size: 18px;
+}
+.h400 {
+  font-size: 20px;
+  line-height: 30px;
+}
+.h500 {
+  font-size: 24px;
+}
+.h600 {
+  font-size: 36px;
+}
+.h700 {
+  font-size: 48px;
+}
+.h800 {
+  font-size: 60px;
+}

@@ -1,0 +1,15 @@
+/* width */
+::-webkit-scrollbar {
+  width: 0;
+  border-radius: 0;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}

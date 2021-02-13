@@ -1,30 +1,104 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div id="app">
+    <AppSidebar />
+    <div class="router-container">
+      <AppHeader />
+      <div class="scroll" id="scroll">
+        <div class="router-wrapper">
+          <RouterView />
+        </div>
+      </div>
+    </div>
+
+    <AppFooter />
   </div>
-  <router-view />
 </template>
 
+<script lang="ts">
+import { defineComponent, onMounted } from "vue";
+import AppSidebar from "@/components/AppSidebar/index.vue";
+import AppHeader from "@/components/AppHeader/index.vue";
+import AppFooter from "@/components/AppFooter/index.vue";
+import OverlayScrollbars from "overlayscrollbars";
+import { mainScroll } from "@/hooks/scrollListener";
+
+export default defineComponent({
+  name: "App",
+  components: {
+    AppHeader,
+    AppSidebar,
+    AppFooter
+  },
+  setup() {
+    onMounted(() => {
+      mainScroll.value = OverlayScrollbars(
+        document.getElementById("scroll") as HTMLElement,
+        {
+          resize: "both"
+        }
+      );
+
+      console.log(mainScroll.value.getElements());
+    });
+
+    return {};
+  }
+});
+</script>
+
 <style lang="scss">
+html,
+body,
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
 
-#nav {
-  padding: 30px;
+#app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+  .router-container {
+    width: calc(100% - 232px);
+    height: calc(100% - 90px);
+    position: relative;
 
-    &.router-link-exact-active {
-      color: #42b983;
+    #scroll {
+      height: 100%;
+      position: relative;
+
+      .os-scrollbar-corner {
+        display: none;
+        visibility: hidden;
+      }
+
+      .os-scrollbar-vertical {
+        bottom: 0;
+
+        .os-scrollbar-handle {
+          width: 12px;
+          background-color: hsla(0, 0%, 100%, 0.3);
+          right: 0;
+          border-radius: 0;
+        }
+      }
     }
   }
+
+  .content {
+    flex-grow: 1;
+    height: 100%;
+  }
 }
+
+@import "./assets/scss/root";
+@import "./assets/scss/classes/classes";
+@import "./assets/scss/fonts/fonts";
+@import "./assets/scss/global/global";
+
+@import "../node_modules/overlayscrollbars/css/OverlayScrollbars.css";
 </style>

@@ -1,0 +1,24 @@
+@import "typography";
+@import "icons";
+@import "grid";
+@import "flex";
+
+.dot-separator {
+  &:before {
+    content: '';
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    margin: 0 8px 3px;
+    background-color: var(--color-inverted-60);
+    flex-shrink: 0;
+    display: inline-block;
+  }
+}
+
+
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
