@@ -1,6 +1,6 @@
 <template>
   <div id="album" class="page">
-    <Suspense :key="0">
+    <Suspense :key="currentRoute.fullPath">
       <template #default>
         <router-view />
       </template>

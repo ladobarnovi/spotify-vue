@@ -55,6 +55,10 @@ body,
   overflow-x: hidden;
 }
 
+body {
+  min-width: 768px;
+}
+
 #app {
   width: 100%;
   height: 100%;

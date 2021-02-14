@@ -5,12 +5,11 @@ import store from "./store";
 import { checkAuth } from "@/utils/auth";
 import axios from "axios";
 
+axios.defaults.baseURL = "https://api.spotify.com/v1";
 import initViews from "./views";
 initViews();
 
 checkAuth();
-
-axios.defaults.baseURL = "https://api.spotify.com/v1";
 
 createApp(App)
   .use(store)

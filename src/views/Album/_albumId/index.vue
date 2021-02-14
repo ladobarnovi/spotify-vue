@@ -36,6 +36,11 @@
           {{ copy.text }}
         </p>
       </div>
+
+      <div class="more">
+        <p class="title">More by {{ album.artists[0].name }}</p>
+        <CardsRow :data="moreAlbums" />
+      </div>
     </main>
   </div>
 </template>
@@ -48,25 +53,31 @@ import { useRouter } from "vue-router";
 import PlaylistTrackItem from "@/components/TrackList/TrackItem/PlaylistTrackItem/index.vue";
 import TrackListTitles from "@/components/TrackList/TrackListTitles/index.vue";
 import TrackListHeader from "@/components/TrackList/TrackListHeader/index.vue";
+import CardsRow from "@/components/Cards/CardsRow.vue";
 
 export default defineComponent({
   components: {
     TrackListHeader,
     TrackListTitles,
-    PlaylistTrackItem
+    PlaylistTrackItem,
+    CardsRow
   },
   async setup() {
     const { currentRoute } = useRouter();
     const album = ref<Album>();
+    const moreAlbums = ref<Album[]>();
 
-    const albumResponse = await API.albums.get({
+    album.value = await API.albums.get({
       id: currentRoute.value.params.albumId as string
     });
+    moreAlbums.value = (
+      await API.artist.albums(album.value.artists[0].id)
+    ).items;
 
-    album.value = albumResponse;
 
     return {
-      album
+      album,
+      moreAlbums
     };
   }
 });
@@ -76,7 +87,7 @@ export default defineComponent({
 main {
   position: relative;
   z-index: 2;
-  padding: 0 32px;
+  padding: 0 32px 32px;
 
   .playlist-actions {
     padding: 24px 0;
@@ -100,7 +111,7 @@ main {
 
   .copyrights {
     padding-top: 32px;
-    margin-bottom: 48px;
+    padding-bottom: 48px;
 
     p {
       color: #b3b3b3;
@@ -108,6 +119,16 @@ main {
       font-weight: 400;
       line-height: 16px;
       letter-spacing: normal;
+    }
+  }
+
+  .more {
+    .title {
+      margin-bottom: 24px;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 28px;
+      letter-spacing: -0.04em;
     }
   }
 }

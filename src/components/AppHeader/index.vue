@@ -1,18 +1,22 @@
 <template>
   <header id="app-header">
     <div class="bg" :style="{ opacity }"></div>
-    <HeaderAuthButtons />
+
+    <HeaderUserProfile v-if="isAuthorised" :data="me" />
+    <HeaderAuthButtons v-else />
   </header>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import HeaderAuthButtons from "@/components/AppHeader/HeaderAuthButtons.vue";
+import HeaderUserProfile from "@/components/AppHeader/HeaderUserProfile.vue";
 import {useMainScroll} from "@/hooks/scrollListener";
+import { me, isAuthorised } from "@/hooks/auth";
 
 export default defineComponent({
   name: "AppHeader",
-  components: { HeaderAuthButtons },
+  components: { HeaderAuthButtons, HeaderUserProfile },
   setup() {
     const opacity = ref<number>(0);
 
@@ -25,7 +29,9 @@ export default defineComponent({
     useMainScroll(scrollHandler);
 
     return {
-      opacity
+      opacity,
+      me,
+      isAuthorised
     };
   }
 });

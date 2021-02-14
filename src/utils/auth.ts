@@ -1,5 +1,6 @@
 import axios from "axios";
-import { token } from "@/hooks/auth";
+import { token, fetchProfile } from "@/hooks/auth";
+import {API} from "@/api";
 
 function setToken(t: string) {
   axios.defaults.headers['Authorization'] = 'Bearer ' + t;
@@ -21,6 +22,7 @@ function getTokenFromUrl() {
 
   if (token) {
     setToken(token);
+    fetchProfile();
   }
 }
 
