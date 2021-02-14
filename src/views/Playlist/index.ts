@@ -17,19 +17,4 @@ export default () => {
       }
     ]
   });
-
-  router.addRoute({
-    path: "/artist",
-    component: Playlist as any,
-    children: [
-      {
-        path: "",
-        redirect: "/",
-      },
-      {
-        path: ":id",
-        redirect: "/"
-      }
-    ]
-  });
 }

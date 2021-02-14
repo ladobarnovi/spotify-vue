@@ -21,12 +21,19 @@ export default {
     }),
 
   topTracks: (id: string) =>
-    apiCall<Track[]>({
+    apiCall<ArtistTopTracksResponse>({
       url: `/artists/${ id }/top-tracks`,
-      method: "get"
+      method: "get",
+      params: {
+        market: "US"
+      }
     })
 }
 
 interface ArtistAlbumsResponse {
   items: Album[]
+}
+
+interface ArtistTopTracksResponse {
+  tracks: Track[]
 }

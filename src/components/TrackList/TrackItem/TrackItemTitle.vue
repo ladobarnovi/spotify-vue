@@ -1,16 +1,15 @@
 <template>
   <div class="track-title">
     <img
-      v-if="track.album"
       class="album-image"
-      :src="track.album.images[2].url"
+      :src="image"
     />
 
     <div class="titles">
-      <div class="name">{{ track.name }}</div>
-      <div class="artist">
+      <div class="name">{{ name }}</div>
+      <div class="artist" v-if="artists">
         <LinkUnderline
-          v-for="(artist, index) in track.artists"
+          v-for="(artist, index) in artists"
           :key="index"
           :to="`/artist/${artist.id}`"
         >{{ artist.name }}</LinkUnderline>
@@ -21,7 +20,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Track } from "@/models";
+import {Artist, Track} from "@/models";
 import LinkUnderline from "@/components/Common/LinkUnderline.vue";
 
 export default defineComponent({
@@ -29,12 +28,17 @@ export default defineComponent({
     LinkUnderline
   },
   props: {
-    track: {
-      type: Object as () => Track
+    image: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    artists: {
+      type: Array as () => Artist[]
     }
-  },
-  setup() {
-    return {};
   }
 });
 </script>
@@ -54,6 +58,9 @@ export default defineComponent({
     .titles {
       overflow: hidden;
       text-overflow: ellipsis;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
 
       .name {
         font-size: 16px;

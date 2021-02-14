@@ -4,30 +4,26 @@
     <TrackItemTitle
       :image="data.track.album.images[2].url"
       :name="data.track.name"
-      :artists="data.track.artists"
     />
-    <TrackItemAlbum v-if="data.track.album" :album="data.track.album" />
-    <TrackItemDate v-if="data.added_at" :date="data.added_at" />
+    <TrackItemListens />
     <TrackItemDuration :track="data.track" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import {PlaylistTrackItem} from "@/models";
+import { PlaylistTrackItem } from "@/models";
 import TrackItemStatus from "../TrackItemStatus.vue";
 import TrackItemTitle from "../TrackItemTitle.vue";
-import TrackItemAlbum from "../TrackItemAlbum.vue";
-import TrackItemDate from "../TrackItemDate.vue";
 import TrackItemDuration from "../TrackItemDuration.vue";
+import TrackItemListens from "../TrackItemListens.vue";
 
 export default defineComponent({
   components: {
     TrackItemStatus,
     TrackItemTitle,
-    TrackItemAlbum,
-    TrackItemDate,
-    TrackItemDuration
+    TrackItemDuration,
+    TrackItemListens
   },
   props: {
     data: {
@@ -44,7 +40,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .track-item {
   display: grid;
-  grid-template-columns: [index] 16px [first] 6fr [var1] 4fr [var2] 3fr [last] minmax(
+  grid-template-columns: [index] 16px [first] 4fr [var1] 2fr [last] minmax(
       120px,
       1fr
     );
@@ -61,15 +57,6 @@ export default defineComponent({
   &.active,
   &:active {
     color: white;
-  }
-
-  &.album {
-    grid-template-columns: [index] 16px [first] 4fr [last] minmax(120px,1fr);
-
-    .track-album,
-    .track-date {
-      display: none;
-    }
   }
 }
 </style>
