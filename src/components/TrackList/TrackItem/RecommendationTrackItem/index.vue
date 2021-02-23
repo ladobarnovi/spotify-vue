@@ -1,6 +1,10 @@
 <template>
   <div class="track-item">
-    <TrackItemTitle :track="data.track" />
+    <TrackItemTitle
+      :image="data.track.album.images[2].url"
+      :name="data.track.name"
+      :artists="data.track.artists"
+    />
     <TrackItemAlbum :album="data.track.album" />
     <TrackItemAdd :id="data.track.id" />
   </div>
