@@ -1,26 +1,49 @@
 <template>
-  <div class="cards-row">
-    <ItemCard
-      v-for="(item, index) in items"
-      :key="index"
-      :data="item"
-    />
+  <div class="cards-row" :class="{ singleLine }">
+    <header>
+      <p class="title">{{ title }}</p>
+      <LinkUnderline v-if="hasMore && to && singleLine" :to="to" class="see-all">
+        <span>See All</span>
+      </LinkUnderline>
+    </header>
+    <div class="grid-container">
+      <ItemCard v-for="(item, index) in items" :key="index" :data="item" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, onBeforeUnmount, ref, computed} from "vue";
+import {
+  defineComponent,
+  onMounted,
+  onBeforeUnmount,
+  ref,
+  computed
+} from "vue";
 import ItemCard from "./ItemCard.vue";
 import { Album, Artist, Track } from "@/models";
+import LinkUnderline from "@/components/Common/LinkUnderline.vue";
 
 export default defineComponent({
   components: {
-    ItemCard
+    ItemCard,
+    LinkUnderline
   },
   props: {
+    title: {
+      type: String,
+      required: true
+    },
+    to: {
+      type: String
+    },
     data: {
       type: Array as () => Artist[] | Track[] | Album[],
       required: true
+    },
+    singleLine: {
+      type: Boolean,
+      default: true
     }
   },
   setup(props) {
@@ -44,7 +67,14 @@ export default defineComponent({
       }
     }
 
-    const items = computed(() => props.data.slice(0, itemCount.value));
+    const items = computed(() => {
+      if (props.singleLine) {
+        return props.data.slice(0, itemCount.value);
+      } else {
+        return props.data;
+      }
+    });
+    const hasMore = computed(() => props.data.length > itemCount.value);
 
     onMounted(() => {
       resizeHandler();
@@ -57,7 +87,8 @@ export default defineComponent({
 
     return {
       itemCount,
-      items
+      items,
+      hasMore
     };
   }
 });
@@ -65,10 +96,41 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .cards-row {
-  display: grid;
-  grid-gap: 24px;
-  grid-template-columns: repeat(auto-fill,minmax(180px,1fr));
-  grid-auto-rows: 0;
-  grid-template-rows: 1fr;
+  &.singleLine {
+    .grid-container {
+      grid-auto-rows: 0 !important;
+    }
+  }
+
+  .grid-container {
+    display: grid;
+    grid-gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-auto-rows: auto;
+    grid-template-rows: 1fr;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 16px;
+
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 28px;
+      letter-spacing: -0.04em;
+    }
+
+    .see-all {
+      color: #b3b3b3;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 16px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+  }
 }
 </style>

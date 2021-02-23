@@ -9,7 +9,7 @@
 
       <div class="additional">
         <span v-if="data.type === 'album'">
-          {{ releaseDate }}
+          {{ releaseDate }}<i class="dot-separator"></i><span class="cap">{{ data.album_type }}</span>
         </span>
       </div>
     </div>
@@ -115,6 +115,10 @@ export default defineComponent({
       line-height: 16px;
       letter-spacing: normal;
     }
+  }
+
+  .cap {
+    text-transform: capitalize;
   }
 }
 </style>

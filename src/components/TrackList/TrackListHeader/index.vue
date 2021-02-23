@@ -189,6 +189,10 @@ header {
         color: hsla(0, 0%, 100%, 0.7);
         margin-top: 8px;
         line-height: 18px;
+
+        & /deep/ a {
+          color: white;
+        }
       }
 
       .group {

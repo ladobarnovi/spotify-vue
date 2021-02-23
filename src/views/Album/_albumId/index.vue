@@ -38,8 +38,10 @@
       </div>
 
       <div class="more">
-        <p class="title">More by {{ album.artists[0].name }}</p>
-        <CardsRow :data="moreAlbums" />
+        <CardsRow
+          :data="moreAlbums"
+          :title="`More by ${album.artists[0].name}`"
+        />
       </div>
     </main>
   </div>
@@ -73,7 +75,6 @@ export default defineComponent({
     moreAlbums.value = (
       await API.artist.albums(album.value.artists[0].id)
     ).items;
-
 
     return {
       album,

@@ -2,7 +2,7 @@
   <div class="track-item">
     <TrackItemStatus />
     <TrackItemTitle
-      :image="data.track.album.images[2].url"
+      :image="data.track?.album?.images[2]?.url"
       :name="data.track.name"
       :artists="data.track.artists"
     />
@@ -35,7 +35,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup() {
+  setup(props) {
+    console.log(props.data)
     return {};
   }
 });

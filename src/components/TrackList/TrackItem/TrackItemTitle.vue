@@ -1,6 +1,7 @@
 <template>
   <div class="track-title">
     <img
+      v-if="image"
       class="album-image"
       :src="image"
     />
@@ -29,8 +30,7 @@ export default defineComponent({
   },
   props: {
     image: {
-      type: String,
-      required: true
+      type: String
     },
     name: {
       type: String,
