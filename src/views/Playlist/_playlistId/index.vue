@@ -17,9 +17,20 @@
         </div>
       </div>
 
+      <transition name="fade">
+        <teleport to="#header-teleport" v-if="fixed">
+          <div class="header-actions">
+            <div class="play">
+              <img src="@/assets/icons/play.svg" />
+            </div>
+            <span>{{ playlist.name }}</span>
+          </div>
+        </teleport>
+      </transition>
+
       <div class="track-list">
         <div class="main-list">
-          <TrackListTitles />
+          <TrackListTitles @fixed="fixed = $event" />
 
           <div class="main-list-body">
             <PlaylistTrackItem
@@ -71,6 +82,7 @@ export default defineComponent({
   async setup() {
     const playlist = ref<Playlist>();
     const recommended = ref<Track[]>();
+    const fixed = ref(false);
     const { currentRoute } = useRouter();
 
     const playlistResponse = await API.playlist.get(
@@ -94,7 +106,8 @@ export default defineComponent({
 
     return {
       playlist,
-      recommended
+      recommended,
+      fixed
     };
   }
 });
@@ -178,6 +191,38 @@ export default defineComponent({
         }
       }
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.header-actions {
+  display: flex;
+  align-items: center;
+
+  .play {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 16px;
+    background-color: var(--green);
+    position: relative;
+
+    img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  span {
+    font-weight: 700;
+    line-height: 28px;
+    letter-spacing: -0.04em;
+    font-size: 24px;
   }
 }
 </style>

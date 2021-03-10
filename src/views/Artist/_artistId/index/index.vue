@@ -20,6 +20,7 @@
         :to="relatedPath"
         title="Fans Also Like"
       />
+      <ArtistAbout />
     </main>
   </div>
 </template>
@@ -27,6 +28,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { Artist, Track, Album } from "@/models";
+import ArtistAbout from "@/views/Artist/_artistId/index/components/ArtistAbout.vue";
 import ArtistHeader from "@/views/Artist/_artistId/index/components/ArtistHeader.vue";
 import ArtistActions from "@/views/Artist/_artistId/index/components/ArtistActions.vue";
 import ArtistPopularTracks from "@/views/Artist/_artistId/index/components/ArtistPopularTracks.vue";
@@ -39,7 +41,8 @@ export default defineComponent({
     ArtistHeader,
     ArtistActions,
     ArtistPopularTracks,
-    CardsRow
+    CardsRow,
+    ArtistAbout
   },
   async setup() {
     const artist = ref<Artist>();
@@ -77,7 +80,8 @@ main {
   padding: 0 32px 32px;
 
   .popular-tracks,
-  .discography {
+  .discography,
+  .related {
     margin-bottom: 40px;
   }
 }

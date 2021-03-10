@@ -1,5 +1,5 @@
 <template>
-  <div class="item-card" @click="redirect">
+  <div class="item-card" :class="data.type" @click="redirect">
     <div class="image-container">
       <img :src="data.images[0].url" />
     </div>
@@ -9,7 +9,11 @@
 
       <div class="additional">
         <span v-if="data.type === 'album'">
-          {{ releaseDate }}<i class="dot-separator"></i><span class="cap">{{ data.album_type }}</span>
+          {{ releaseDate }}<i class="dot-separator"></i
+          ><span class="cap">{{ data.album_type }}</span>
+        </span>
+        <span v-else-if="data.type === 'artist'">
+          <span class="cap">{{ data.type }}</span>
         </span>
       </div>
     </div>
@@ -37,7 +41,6 @@ export default defineComponent({
     });
 
     function redirect() {
-      console.log("redirect", props.data.type);
       switch (props.data.type as ItemType) {
         case "album":
           push(`/album/${props.data.id}`);
@@ -74,6 +77,13 @@ export default defineComponent({
     background-color: #282828;
   }
 
+  &.artist {
+    .image-container {
+      border-radius: 50%;
+      overflow: hidden;
+    }
+  }
+
   .image-container {
     width: 100%;
     padding-bottom: 100%;
@@ -81,6 +91,7 @@ export default defineComponent({
     overflow: hidden;
     position: relative;
     margin-bottom: 16px;
+    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.5);
 
     img {
       position: absolute;

@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
-import {useMainScroll} from "@/hooks/scrollListener";
+import { defineComponent, ref, watch } from "vue";
+import { useMainScroll } from "@/hooks/scrollListener";
 
 export default defineComponent({
-  setup() {
+  setup(_, { emit }) {
     const el = ref<HTMLDivElement>();
     const fixed = ref<boolean>(false);
 
@@ -23,6 +23,8 @@ export default defineComponent({
     }
 
     useMainScroll(scrollHandler);
+
+    watch(fixed, () => emit("fixed", fixed.value));
 
     return {
       el,
@@ -75,7 +77,7 @@ export default defineComponent({
   }
 
   &.album {
-    grid-template-columns: [index] 16px [first] 4fr [last] minmax(120px,1fr);
+    grid-template-columns: [index] 16px [first] 4fr [last] minmax(120px, 1fr);
 
     .album-title,
     .date {

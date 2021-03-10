@@ -1,6 +1,10 @@
 <template>
   <header id="app-header">
     <div class="bg" :style="{ opacity }"></div>
+    <HeaderNavigation />
+    <div id="header-teleport"></div>
+
+
 
     <HeaderUserProfile v-if="isAuthorised" :data="me" />
     <HeaderAuthButtons v-else />
@@ -11,12 +15,13 @@
 import { defineComponent, ref, onMounted } from "vue";
 import HeaderAuthButtons from "@/components/AppHeader/HeaderAuthButtons.vue";
 import HeaderUserProfile from "@/components/AppHeader/HeaderUserProfile.vue";
+import HeaderNavigation from "@/components/AppHeader/HeaderNavigation.vue";
 import {useMainScroll} from "@/hooks/scrollListener";
 import { me, isAuthorised } from "@/hooks/auth";
 
 export default defineComponent({
   name: "AppHeader",
-  components: { HeaderAuthButtons, HeaderUserProfile },
+  components: { HeaderAuthButtons, HeaderUserProfile, HeaderNavigation },
   setup() {
     const opacity = ref<number>(0);
 

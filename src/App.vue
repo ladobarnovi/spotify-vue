@@ -37,8 +37,6 @@ export default defineComponent({
           resize: "both"
         }
       );
-
-      console.log(mainScroll.value.getElements());
     });
 
     return {};
