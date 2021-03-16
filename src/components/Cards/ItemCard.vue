@@ -91,7 +91,7 @@ export default defineComponent({
     overflow: hidden;
     position: relative;
     margin-bottom: 16px;
-    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.5);
 
     img {
       position: absolute;
@@ -99,6 +99,8 @@ export default defineComponent({
       left: 0;
       width: 100%;
       height: 100%;
+      object-fit: cover;
+      object-position: center;
     }
   }
 

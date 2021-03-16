@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div id="collection-playlists">
+
+  </div>
 </template>
 
 <script lang="ts">

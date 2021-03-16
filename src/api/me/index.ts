@@ -1,5 +1,5 @@
-import {apiCall} from "@/api/utils";
-import {Image, ItemType, OwnerType, Playlist} from "@/models";
+import { apiCall } from "@/api/utils";
+import {Album, Artist, Image, ItemType, OwnerType, Playlist} from "@/models";
 
 export default {
   get: () =>
@@ -13,22 +13,36 @@ export default {
       url: "/me/playlists",
       method: "get",
       params
+    }),
+
+  albumsGet: (params?: any) =>
+    apiCall<MyAlbumsResponse>({
+      url: "/me/albums",
+      method: "get",
+      params
+    }),
+
+  followingGet: (params: { type: string }) =>
+    apiCall<MyArtistsResponse>({
+      url: "/me/following",
+      method: "get",
+      params
     })
-}
+};
 
 interface MyPlaylistRequest {
-  limit?: number,
-  offset?: number,
+  limit?: number;
+  offset?: number;
 }
 
 interface MyPlaylistsResponse {
-  href: string,
-  items: Playlist[],
-  limit: number,
-  next: string,
-  offset: number,
-  previous: string,
-  total: number
+  href: string;
+  items: Playlist[];
+  limit: number;
+  next: string;
+  offset: number;
+  previous: string;
+  total: number;
 }
 
 export interface UserProfile {
@@ -36,22 +50,41 @@ export interface UserProfile {
   display_name: string;
   email: string;
   explicit_content: {
-    filter_enabled: boolean,
-    filter_locked: boolean
-  }
+    filter_enabled: boolean;
+    filter_locked: boolean;
+  };
   external_urls: {
-    [key: string]: string
-  }
+    [key: string]: string;
+  };
   followers: {
-    href: string,
-    total: number
+    href: string;
+    total: number;
+  };
+
+  href: string;
+  id: string;
+  images: Image[];
+
+  product: string;
+  type: OwnerType;
+  uri: string;
+}
+
+interface MyAlbumsResponse {
+  href: string;
+  items: {
+    added_at: Date;
+    album: Album;
+  }[];
+  limit: number;
+  next: string;
+  offset: number;
+  previous: string;
+  total: number;
+}
+
+interface MyArtistsResponse {
+  artists: {
+    items: Artist[];
   }
-
-  href: string
-  id: string
-  images: Image[]
-
-  product: string
-  type: OwnerType
-  uri: string
 }

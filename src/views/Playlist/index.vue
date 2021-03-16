@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 import Loader from "@/components/Common/Loader.vue";
 
 export default defineComponent({
@@ -21,7 +21,7 @@ export default defineComponent({
     Loader
   },
   setup() {
-    const { currentRoute } = useRouter()
+    const { currentRoute } = useRouter();
     return {
       currentRoute
     };
