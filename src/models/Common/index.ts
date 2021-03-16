@@ -1,14 +1,14 @@
 export interface Copyrights {
-  text: string,
-  type: string,
+  text: string;
+  type: string;
 }
 
 export interface Image {
-  height: number,
-  width: number
-  url: string
+  height: number;
+  width: number;
+  url: string;
 }
 
-export type ItemType = "track" | "album" | "artist" | "playlist"
+export type ItemType = "track" | "album" | "artist" | "playlist" | "show";
 
-export type OwnerType = "user" | "admin"
+export type OwnerType = "user" | "admin";

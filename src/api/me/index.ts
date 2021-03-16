@@ -1,5 +1,13 @@
 import { apiCall } from "@/api/utils";
-import {Album, Artist, Image, ItemType, OwnerType, Playlist} from "@/models";
+import {
+  Album,
+  Artist,
+  Image,
+  Podcast,
+  OwnerType,
+  Playlist,
+  Track
+} from "@/models";
 
 export default {
   get: () =>
@@ -25,6 +33,20 @@ export default {
   followingGet: (params: { type: string }) =>
     apiCall<MyArtistsResponse>({
       url: "/me/following",
+      method: "get",
+      params
+    }),
+
+  tracksGet: (params?: any) =>
+    apiCall<MyTracksResponse>({
+      url: "/me/tracks",
+      method: "get",
+      params
+    }),
+
+  showsGet: (params?: any) =>
+    apiCall<MyShowsResponse>({
+      url: "/me/shows",
       method: "get",
       params
     })
@@ -86,5 +108,19 @@ interface MyAlbumsResponse {
 interface MyArtistsResponse {
   artists: {
     items: Artist[];
-  }
+  };
+}
+
+interface MyTracksResponse {
+  items: {
+    added_at: Date;
+    track: Track;
+  }[];
+}
+
+interface MyShowsResponse {
+  items: {
+    added_at: Date;
+    show: Podcast;
+  }[];
 }

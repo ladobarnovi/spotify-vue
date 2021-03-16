@@ -7,6 +7,7 @@
       </LinkUnderline>
     </header>
     <div class="grid-container">
+      <slot />
       <ItemCard v-for="(item, index) in items" :key="index" :data="item" />
     </div>
   </div>

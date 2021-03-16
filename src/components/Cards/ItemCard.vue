@@ -15,6 +15,13 @@
         <span v-else-if="data.type === 'artist'">
           <span class="cap">{{ data.type }}</span>
         </span>
+        <span v-else-if="data.type === 'playlist'">
+          <span v-if="data.description" v-html="data.description"></span>
+          <span v-else>By {{ data.owner.display_name }}</span>
+        </span>
+        <span v-else-if="data.type === 'show'">
+          <span>{{ data.publisher }}</span>
+        </span>
       </div>
     </div>
   </div>
@@ -22,14 +29,14 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { Album, Artist, ItemType, Track } from "@/models";
+import { Album, Artist, ItemType, Track, Playlist, Podcast } from "@/models";
 import moment from "moment";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
   props: {
     data: {
-      type: Object as () => Album | Artist | Track,
+      type: Object as () => Album | Artist | Track | Playlist | Podcast,
       required: true
     }
   },

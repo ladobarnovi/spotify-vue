@@ -3,3 +3,4 @@ export * from "./Artist";
 export * from "./Common";
 export * from "./Track";
 export * from "./Playlist";
+export * from "./Podcast";
