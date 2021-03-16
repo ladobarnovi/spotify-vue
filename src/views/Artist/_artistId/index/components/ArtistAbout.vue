@@ -19,74 +19,71 @@
       </p>
     </div>
 
-    <div class="modal">
-      <div id="modal-body" class="modal-body">
-        <header>
-          <img src="/outerones.jpg" />
-        </header>
-        <main>
-          <div class="left">
-            <div class="followers">
-              <p>34,567</p>
-              <p>Followers</p>
+    <Modal v-show="active" @close="toggle">
+      <header>
+        <img src="/outerones.jpg" />
+      </header>
+      <main>
+        <div class="left">
+          <div class="followers">
+            <p>34,567</p>
+            <p>Followers</p>
+          </div>
+          <div class="listeners">
+            <p>85,615</p>
+            <p>Monthly Listeners</p>
+          </div>
+          <div class="per-city">
+            <div>
+              <p>Los Angeles, CA</p>
+              <p>2,245 Listeners</p>
             </div>
-            <div class="listeners">
-              <p>85,615</p>
-              <p>Monthly Listeners</p>
+            <div>
+              <p>Mexico City, MX</p>
+              <p>23,571 Listeners</p>
             </div>
-            <div class="per-city">
-              <div>
-                <p>Los Angeles, CA</p>
-                <p>2,245 Listeners</p>
-              </div>
-              <div>
-                <p>Mexico City, MX</p>
-                <p>23,571 Listeners</p>
-              </div>
-              <div>
-                <p>Paris, FR</p>
-                <p>234 Listeners</p>
-              </div>
-            </div>
-            <div class="media">
-              <a class="fb">
-                <img src="@/assets/icons/fb.svg" />
-                <p>Facebook</p>
-              </a>
-              <a class="twitter">
-                <img src="@/assets/icons/twitter.svg" />
-                <p>Twitter</p>
-              </a>
-              <a class="ig">
-                <img src="@/assets/icons/ig.svg" />
-                <p>Instagram</p>
-              </a>
+            <div>
+              <p>Paris, FR</p>
+              <p>234 Listeners</p>
             </div>
           </div>
-          <div class="right">
-            "The Outer Ones" sees Revocation pushing both the death metal and
-            progressive elements of their signature sound harder than ever. “I
-            knew that I wanted to go in a darker direction, and this is our most
-            death metal album to date,” states vocalist/guitarist Dave Davidson.
-            “Sometimes when death metal bands go down the prog route they lose
-            some of that edge, but we wanted to keep the aggression at the
-            forefront of what we do while still pushing our boundaries.” Moving
-            away from the societal and historical themes that informed 2016′s
-            "Great is Our Sin" this time Davidson has immersed himself in the
-            fantastic, evoking one of the great writers of the sci-fi/horror
-            genre. “The title is my ode to H.P. Lovecraft and the entities of
-            pure cosmic horror that rule that universe he created. Since the new
-            music we were writing was so evil and spacey in sections it seemed
-            to be the right title to fit the overall vibe. But while the lyrical
-            content is largely influenced by such writings, in every allegory
-            there is of course some reflection of the real world, so I enjoy
-            writing in a way that could have one overlaying meaning and then
-            another deeper, symbolic meaning as well.”
+          <div class="media">
+            <a class="fb">
+              <img src="@/assets/icons/fb.svg" />
+              <p>Facebook</p>
+            </a>
+            <a class="twitter">
+              <img src="@/assets/icons/twitter.svg" />
+              <p>Twitter</p>
+            </a>
+            <a class="ig">
+              <img src="@/assets/icons/ig.svg" />
+              <p>Instagram</p>
+            </a>
           </div>
-        </main>
-        <div class="modal-close"></div>
-      </div>
-    </div>
+        </div>
+        <div class="right">
+          "The Outer Ones" sees Revocation pushing both the death metal and
+          progressive elements of their signature sound harder than ever. “I
+          knew that I wanted to go in a darker direction, and this is our most
+          death metal album to date,” states vocalist/guitarist Dave Davidson.
+          “Sometimes when death metal bands go down the prog route they lose
+          some of that edge, but we wanted to keep the aggression at the
+          forefront of what we do while still pushing our boundaries.” Moving
+          away from the societal and historical themes that informed 2016′s
+          "Great is Our Sin" this time Davidson has immersed himself in the
+          fantastic, evoking one of the great writers of the sci-fi/horror
+          genre. “The title is my ode to H.P. Lovecraft and the entities of pure
+          cosmic horror that rule that universe he created. Since the new music
+          we were writing was so evil and spacey in sections it seemed to be the
+          right title to fit the overall vibe. But while the lyrical content is
+          largely influenced by such writings, in every allegory there is of
+          course some reflection of the real world, so I enjoy writing in a way
+          that could have one overlaying meaning and then another deeper,
+          symbolic meaning as well.”
+        </div>
+      </main>
+    </Modal>
   </div>
 </template>
 
@@ -94,8 +91,10 @@
 import { defineComponent, onMounted } from "vue";
 import { useToggle } from "@/hooks/toggle";
 import OverlayScrollbars from "overlayscrollbars";
+import Modal from "@/components/Common/Modal.vue";
 
 export default defineComponent({
+  components: { Modal },
   setup() {
     const { active, toggle } = useToggle();
 
@@ -179,51 +178,51 @@ export default defineComponent({
   }
 
   .modal {
-    position: fixed;
-    z-index: 2;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
+    header {
+      height: 432px;
 
-    .modal-body {
-      width: 768px;
-      min-width: 500px;
-      max-height: 70vh;
-      height: 100%;
-      background-color: #121212;
-      position: relative;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 8px;
-
-      header {
-        height: 432px;
-
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center;
-        }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
       }
+    }
 
-      main {
-        padding: 40px;
-        display: flex;
+    main {
+      padding: 40px;
+      display: flex;
 
-        .left {
-          .followers,
-          .listeners {
-            margin-bottom: 40px;
+      .left {
+        .followers,
+        .listeners {
+          margin-bottom: 40px;
 
+          & > :first-child {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 36px;
+            letter-spacing: -0.04em;
+          }
+
+          & > :last-child {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 16px;
+            letter-spacing: normal;
+          }
+        }
+
+        .per-city {
+          margin-bottom: 40px;
+
+          div {
             & > :first-child {
-              font-size: 32px;
+              font-size: 14px;
               font-weight: 700;
-              line-height: 36px;
-              letter-spacing: -0.04em;
+              line-height: 16px;
+              letter-spacing: normal;
+              margin-bottom: 8px;
             }
 
             & > :last-child {
@@ -231,73 +230,52 @@ export default defineComponent({
               font-weight: 400;
               line-height: 16px;
               letter-spacing: normal;
+              color: #b3b3b3;
             }
-          }
 
-          .per-city {
-            margin-bottom: 40px;
-
-            div {
-              & > :first-child {
-                font-size: 14px;
-                font-weight: 700;
-                line-height: 16px;
-                letter-spacing: normal;
-                margin-bottom: 8px;
-              }
-
-              & > :last-child {
-                font-size: 14px;
-                font-weight: 400;
-                line-height: 16px;
-                letter-spacing: normal;
-                color: #b3b3b3;
-              }
-
-              &:not(:last-child) {
-                margin-bottom: 16px;
-              }
-            }
-          }
-
-          .media {
-            a {
-              display: flex;
-              align-items: center;
-              color: white;
-              opacity: 0.7;
-              cursor: pointer;
-
-              img {
-                width: 24px;
-                height: 24px;
-                margin-right: 4px;
-              }
-
-              &:hover {
-                opacity: 1;
-
-                p {
-                  text-decoration: underline;
-                }
-              }
-
-              &:not(:last-child) {
-                margin-bottom: 16px;
-              }
+            &:not(:last-child) {
+              margin-bottom: 16px;
             }
           }
         }
 
-        .right {
-          margin-left: 40px;
-          flex-grow: 1;
-          color: #b3b3b3;
-          font-size: 14px;
-          font-weight: 400;
-          line-height: 16px;
-          letter-spacing: normal;
+        .media {
+          a {
+            display: flex;
+            align-items: center;
+            color: white;
+            opacity: 0.7;
+            cursor: pointer;
+
+            img {
+              width: 24px;
+              height: 24px;
+              margin-right: 4px;
+            }
+
+            &:hover {
+              opacity: 1;
+
+              p {
+                text-decoration: underline;
+              }
+            }
+
+            &:not(:last-child) {
+              margin-bottom: 16px;
+            }
+          }
         }
+      }
+
+      .right {
+        margin-left: 40px;
+        flex-grow: 1;
+        color: #b3b3b3;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 16px;
+        letter-spacing: normal;
       }
     }
   }

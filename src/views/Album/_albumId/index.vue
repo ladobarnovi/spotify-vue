@@ -31,8 +31,6 @@
       </div>
       <div class="copyrights">
         <p v-for="(copy, index) in album.copyrights" :key="index">
-          <span v-if="copy.type === 'p'">℗</span>
-          <span v-else>©</span>
           {{ copy.text }}
         </p>
       </div>

@@ -5,6 +5,7 @@
       :image="data.track?.album?.images[2]?.url"
       :name="data.track.name"
       :artists="data.track.artists"
+      :explicit="data.track.explicit"
     />
     <TrackItemAlbum v-if="data.track.album" :album="data.track.album" />
     <TrackItemDate v-if="data.added_at" :date="data.added_at" />
