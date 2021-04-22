@@ -148,7 +148,7 @@ export default defineComponent({
       }
 
       .recommended-list-body {
-        margin-top: 30px;
+        margin-top: 48px;
 
         .recommended-list-title {
           margin-bottom: 24px;

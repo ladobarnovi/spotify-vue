@@ -5,7 +5,14 @@
       <AppHeader />
       <div class="scroll" id="scroll">
         <div class="router-wrapper">
-          <RouterView />
+          <Suspense>
+            <template #default>
+              <RouterView />
+            </template>
+            <template #fallback>
+              <Loader />
+            </template>
+          </Suspense>
         </div>
       </div>
     </div>
@@ -21,10 +28,13 @@ import AppHeader from "@/components/AppHeader/index.vue";
 import AppFooter from "@/components/AppFooter/index.vue";
 import OverlayScrollbars from "overlayscrollbars";
 import { mainScroll } from "@/hooks/scrollListener";
+import Loader from "@/components/Common/Loader.vue";
+import {API} from "@/api";
 
 export default defineComponent({
   name: "App",
   components: {
+    Loader,
     AppHeader,
     AppSidebar,
     AppFooter
@@ -37,6 +47,8 @@ export default defineComponent({
           resize: "both"
         }
       );
+
+      API.player.recentlyPlayed();
     });
 
     return {};

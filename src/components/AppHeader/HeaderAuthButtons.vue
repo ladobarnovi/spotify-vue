@@ -12,7 +12,7 @@ export default defineComponent({
   setup() {
     const clientId = process.env.VUE_APP_CLIENT_ID;
     const redirect = "http://localhost:3000/";
-    const scopes = 'user-read-private user-read-email playlist-read-private user-library-read user-library-modify user-top-read playlist-read-collaborative playlist-modify-public playlist-modify-private user-follow-modify user-read-playback-state user-read-currently-playing user-modify-playback-state user-read-recently-played user-follow-read';
+    const scopes = 'streaming user-read-private user-read-email playlist-read-private user-library-read user-library-modify user-top-read playlist-read-collaborative playlist-modify-public playlist-modify-private user-follow-modify user-read-playback-state user-read-currently-playing user-modify-playback-state user-read-recently-played user-follow-read';
     const url = `https://accounts.spotify.com/authorize?client_id=${ clientId }&response_type=token&redirect_uri=${ encodeURI(redirect) }&scope=${ encodeURI(scopes) }`;
 
     return {
