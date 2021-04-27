@@ -1,5 +1,5 @@
 import { apiCall } from "@/api/utils";
-import { Track } from "@/models";
+import { Album, ItemType, Playlist, Track } from "@/models";
 
 export default {
   recentlyPlayed: () =>
@@ -8,17 +8,17 @@ export default {
       method: "GET"
     }),
 
-  play: (deviceId: string) =>
+  play: (deviceId: string, data: object) =>
     apiCall({
       url: `/me/player/play?device_id=${deviceId}`,
       method: "PUT",
-      data: {
-        position_ms: 0,
-        offset: {
-          position: 0
-        },
-        context_uri: "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr"
-      }
+      data
+    }),
+
+  currentPlaying: () =>
+    apiCall<CurrentPlayingResponse>({
+      url: "/me/player/currently-playing?market=US",
+      method: "GET"
     })
 };
 
@@ -27,4 +27,21 @@ interface RecentlyPlayedResponse {
     played_at: Date;
     track: Track;
   }[];
+}
+
+interface CurrentPlayingResponse {
+  actions: {
+    disallows: {
+      resuming: boolean;
+    };
+  };
+  context: {
+    href: string;
+    type: ItemType;
+    uri: string;
+  };
+  currently_playing_type: ItemType;
+  is_playing: boolean;
+  item: Album | Playlist | Track;
+  progress_ms: number;
 }

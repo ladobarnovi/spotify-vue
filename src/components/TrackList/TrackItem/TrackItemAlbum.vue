@@ -34,6 +34,7 @@ export default defineComponent({
     a {
       color: #b3b3b3;
       white-space: nowrap;
+      line-height: 1.2;
     }
   }
 

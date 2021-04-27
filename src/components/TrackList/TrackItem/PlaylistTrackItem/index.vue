@@ -1,6 +1,10 @@
 <template>
-  <div class="track-item">
-    <TrackItemStatus />
+  <div class="track-item" :class="{ playing: isPlaying && isCurrentTrack, paused: isPaused && isCurrentTrack }">
+    <TrackItemStatus
+      @play="play"
+      :is-playing="isPlaying"
+      :is-current-track="isCurrentTrack"
+    />
     <TrackItemTitle
       :image="data.track?.album?.images[2]?.url"
       :name="data.track.name"
@@ -14,13 +18,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import {PlaylistTrackItem} from "@/models";
+import { computed, defineComponent } from "vue";
+import { PlaylistTrackItem } from "@/models";
 import TrackItemStatus from "../TrackItemStatus.vue";
 import TrackItemTitle from "../TrackItemTitle.vue";
 import TrackItemAlbum from "../TrackItemAlbum.vue";
 import TrackItemDate from "../TrackItemDate.vue";
 import TrackItemDuration from "../TrackItemDuration.vue";
+import { usePlayer } from "@/hooks/player";
 
 export default defineComponent({
   components: {
@@ -36,8 +41,29 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
-    return {};
+  setup(props, ctx) {
+    const { currentTrackId, isPlaying, isPaused, togglePlay } = usePlayer();
+
+    const isCurrentTrack = computed(
+      () => currentTrackId.value === props.data.track.id
+    );
+
+    function play() {
+      console.log("PLayy");
+      if (isCurrentTrack.value && (isPaused.value || isPlaying.value)) {
+        console.log("Toggle Plah");
+        togglePlay();
+      } else {
+        ctx.emit("play");
+      }
+    }
+
+    return {
+      isCurrentTrack,
+      isPlaying,
+      isPaused,
+      play
+    };
   }
 });
 </script>
@@ -65,7 +91,7 @@ export default defineComponent({
   }
 
   &.album {
-    grid-template-columns: [index] 16px [first] 4fr [last] minmax(120px,1fr);
+    grid-template-columns: [index] 16px [first] 4fr [last] minmax(120px, 1fr);
 
     .track-album,
     .track-date {

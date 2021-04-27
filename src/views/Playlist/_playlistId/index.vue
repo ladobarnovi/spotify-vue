@@ -37,6 +37,7 @@
               v-for="(item, index) in playlist.tracks.items"
               :key="index"
               :data="item"
+              @play="playPlaylist(playlist.uri, index)"
             />
           </div>
         </div>
@@ -71,6 +72,7 @@ import TrackListHeader from "@/components/TrackList/TrackListHeader/index.vue";
 import PlaylistTrackItem from "@/components/TrackList/TrackItem/PlaylistTrackItem/index.vue";
 import RecommendationTrackItem from "@/components/TrackList/TrackItem/RecommendationTrackItem/index.vue";
 import TrackListTitles from "@/components/TrackList/TrackListTitles/index.vue";
+import {usePlayer} from "@/hooks/player";
 
 export default defineComponent({
   components: {
@@ -84,6 +86,7 @@ export default defineComponent({
     const recommended = ref<Track[]>();
     const fixed = ref(false);
     const { currentRoute } = useRouter();
+    const { playPlaylist } = usePlayer();
 
     const playlistResponse = await API.playlist.get(
       currentRoute.value.params.playlistId as string
@@ -107,7 +110,8 @@ export default defineComponent({
     return {
       playlist,
       recommended,
-      fixed
+      fixed,
+      playPlaylist
     };
   }
 });

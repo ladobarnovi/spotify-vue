@@ -1,6 +1,7 @@
 import axios from "axios";
 import { token, fetchProfile } from "@/hooks/auth";
 import {API} from "@/api";
+import {usePlayer} from "@/hooks/player";
 
 function setToken(t: string) {
   axios.defaults.headers['Authorization'] = 'Bearer ' + t;
@@ -23,6 +24,11 @@ function getTokenFromUrl() {
   if (token) {
     setToken(token);
     fetchProfile();
+
+    const { initPlayer } = usePlayer();
+    initPlayer();
+
+    API.player.currentPlaying()
   }
 }
 

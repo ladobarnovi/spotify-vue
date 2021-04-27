@@ -1,11 +1,12 @@
 <template>
   <div class="track-status">
     <div class="track-index"></div>
-    <div class="play">
-      <img src="@/assets/icons/play.svg" alt="Play" />
+    <div class="pause" @click="$emit('play')">
+      <img class="pause-icon" src="@/assets/icons/pause.svg" alt="Pause" />
+      <img class="eq-icon" src="/eq.gif" />
     </div>
-    <div class="pause">
-      <img src="@/assets/icons/pause.svg" alt="Pause" />
+    <div class="play" @click="$emit('play')">
+      <img src="@/assets/icons/play.svg" alt="Play" />
     </div>
   </div>
 </template>
@@ -14,6 +15,14 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  props: {
+    isPlaying: {
+      type: Boolean
+    },
+    isCurrentTrack: {
+      type: Boolean
+    }
+  },
   setup() {
     return {};
   }
@@ -49,6 +58,19 @@ export default defineComponent({
         width: 16px;
         height: 16px;
       }
+
+      .eq-icon {
+        width: 14px;
+        height: 14px;
+      }
+
+      .pause-icon {
+        display: none;
+      }
+    }
+
+    .pause {
+      display: none;
     }
   }
 
@@ -62,6 +84,16 @@ export default defineComponent({
 
       .track-index {
         display: none;
+      }
+
+      .pause {
+        .pause-icon {
+          display: block;
+        }
+
+        .eq-icon {
+          display: none;
+        }
       }
     }
   }
@@ -80,6 +112,12 @@ export default defineComponent({
 
     .pause {
       display: block;
+    }
+  }
+
+  &.paused {
+    .track-index {
+      color: #1db954;
     }
   }
 }

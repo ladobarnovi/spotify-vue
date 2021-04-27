@@ -25,6 +25,7 @@
               class="album"
               :data="{ track }"
               :key="index"
+              @play="playPlaylist(album.uri, index)"
             />
           </div>
         </div>
@@ -54,6 +55,7 @@ import PlaylistTrackItem from "@/components/TrackList/TrackItem/PlaylistTrackIte
 import TrackListTitles from "@/components/TrackList/TrackListTitles/index.vue";
 import TrackListHeader from "@/components/TrackList/TrackListHeader/index.vue";
 import CardsRow from "@/components/Cards/CardsRow.vue";
+import {usePlayer} from "@/hooks/player";
 
 export default defineComponent({
   components: {
@@ -64,6 +66,7 @@ export default defineComponent({
   },
   async setup() {
     const { currentRoute } = useRouter();
+    const { playPlaylist } = usePlayer();
     const album = ref<Album>();
     const moreAlbums = ref<Album[]>();
 
@@ -76,7 +79,8 @@ export default defineComponent({
 
     return {
       album,
-      moreAlbums
+      moreAlbums,
+      playPlaylist
     };
   }
 });

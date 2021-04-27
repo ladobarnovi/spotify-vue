@@ -3,15 +3,16 @@
     <img v-if="image" class="album-image" :src="image" />
 
     <div class="titles">
-      <div class="name">{{ name }}</div>
+      <div class="name ellipsis">{{ name }}</div>
       <div class="artist" v-if="artists">
         <div v-if="explicit" class="explicit">E</div>
-        <LinkUnderline
-          v-for="(artist, index) in artists"
-          :key="index"
-          :to="`/artist/${artist.id}`"
-          >{{ artist.name }}</LinkUnderline
-        >
+        <p class="ellipsis">
+          <LinkUnderline
+            v-for="(artist, index) in artists"
+            :key="index"
+            :to="`/artist/${artist.id}`"
+          >{{ artist.name }}</LinkUnderline>
+        </p>
       </div>
     </div>
   </div>
@@ -58,7 +59,6 @@ export default defineComponent({
 
     .titles {
       overflow: hidden;
-      text-overflow: ellipsis;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -88,6 +88,7 @@ export default defineComponent({
           line-height: 16px;
           font-size: 9px;
           margin-right: 8px;
+          flex-shrink: 0;
         }
 
         .link {
@@ -116,6 +117,17 @@ export default defineComponent({
       .titles {
         .link {
           color: white;
+        }
+      }
+    }
+  }
+
+  &.playing,
+  &.paused {
+    .track-title {
+      .titles {
+        .name {
+          color: #1db954;
         }
       }
     }

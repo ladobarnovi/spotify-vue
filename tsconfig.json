@@ -10,6 +10,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
+    "strictNullChecks": false,
     "baseUrl": ".",
     "types": [
       "webpack-env",
@@ -24,7 +25,7 @@
       "esnext",
       "dom",
       "dom.iterable",
-      "scripthost",
+      "scripthost"
     ]
   },
   "include": [
