@@ -1,11 +1,16 @@
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { API } from "@/api";
+import {useTimer} from "@/hooks/timer";
+
+let trackPositionIntervalId: number = null;
 
 const player = ref<Spotify.SpotifyPlayer>();
 const deviceId = ref<string>(null);
 const isPlaying = ref<boolean>(false);
 const isPaused = ref<boolean>(false);
 const currentTrackId = ref<string>(null);
+const trackDuration = ref<number>(null);
+const trackPosition = ref<number>(null);
 
 const initPlayer = () => {
   window.onSpotifyWebPlaybackSDKReady = async () => {
@@ -21,12 +26,22 @@ const initPlayer = () => {
       deviceId.value = device_id;
     });
 
-
-    player.value?.addListener("player_state_changed", (state => {
+    player.value?.addListener("player_state_changed", state => {
+      console.log(state);
+      trackPosition.value = state.position;
+      trackDuration.value = state.duration;
       currentTrackId.value = state.track_window.current_track.id;
       isPaused.value = state.paused;
       isPlaying.value = !state.paused;
-    }))
+
+      clearInterval(trackPositionIntervalId);
+
+      if (trackPosition.value > 0 && isPlaying.value) {
+        trackPositionIntervalId = setInterval(() => {
+          trackPosition.value += 500;
+        }, 500);
+      }
+    });
 
     player.value?.connect();
   };
@@ -53,6 +68,10 @@ const playPlaylist = async (context_uri: string, position = 0) => {
   await API.player.play(deviceId.value, data);
 };
 
+const seek = async (position: number) => {
+  await player.value.seek(position);
+};
+
 export const usePlayer = () => {
   return {
     initPlayer,
@@ -61,6 +80,10 @@ export const usePlayer = () => {
     currentTrackId,
     playTracks,
     playPlaylist,
-    togglePlay
+    togglePlay,
+
+    trackPosition,
+    trackDuration,
+    seek
   };
 };

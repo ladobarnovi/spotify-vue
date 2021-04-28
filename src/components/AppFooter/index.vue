@@ -1,13 +1,17 @@
 <template>
   <div id="app-footer">
-
+    <PlayerControls />
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
+import PlayerControls from "./PlayerControls/index.vue";
 
 export default defineComponent({
+  components: {
+    PlayerControls
+  },
   setup() {
     return {};
   }
