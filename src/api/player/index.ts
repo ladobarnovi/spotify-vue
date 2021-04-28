@@ -19,6 +19,26 @@ export default {
     apiCall<CurrentPlayingResponse>({
       url: "/me/player/currently-playing?market=US",
       method: "GET"
+    }),
+
+  shuffle: (params: { device_id: string; state: boolean }) =>
+    apiCall({
+      url: "/me/player/shuffle",
+      method: "PUT",
+      params
+    }),
+
+  player: () =>
+    apiCall({
+      url: "/me/player",
+      method: "GET"
+    }),
+
+  repeat: (params: { device_id: string; state: string }) =>
+    apiCall({
+      url: "/me/player/repeat",
+      method: "PUT",
+      params
     })
 };
 

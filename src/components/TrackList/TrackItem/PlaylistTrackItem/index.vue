@@ -49,9 +49,7 @@ export default defineComponent({
     );
 
     function play() {
-      console.log("PLayy");
       if (isCurrentTrack.value && (isPaused.value || isPlaying.value)) {
-        console.log("Toggle Plah");
         togglePlay();
       } else {
         ctx.emit("play");
