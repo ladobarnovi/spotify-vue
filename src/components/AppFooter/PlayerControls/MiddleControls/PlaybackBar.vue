@@ -1,103 +1,61 @@
 <template>
   <div class="playback-bar" onmousedown="return false">
-    <p class="current">{{ position }}</p>
-    <div class="progress-bar" ref="progressBar" :class="{ active: mouseDown }">
-      <div class="track"></div>
-      <div class="fill" :style="{ width: fillWidth }"></div>
-    </div>
-    <p class="duration">{{ duration }}</p>
+    <p class="current">{{ positionFormatted }}</p>
+    <RangeSlider
+      :max-value="trackDuration"
+      :current-value="trackPosition"
+      @click="seeking = true"
+      @seeking="seekingAt"
+      @submit="setPosition"
+    />
+    <p class="duration">{{ durationFormatted }}</p>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onBeforeUnmount,
-  onMounted,
-  ref
-} from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { useTimer } from "@/hooks/timer";
 import { usePlayer } from "@/hooks/player";
+import RangeSlider from "@/components/Common/RangeSlider.vue";
 
 export default defineComponent({
+  components: { RangeSlider },
   setup() {
     const { millisecondToTimer } = useTimer();
     const { trackPosition, trackDuration, seek } = usePlayer();
 
-    const mouseDown = ref(false);
-    const progressBar = ref<HTMLDivElement>();
-    const selectedPosition = ref<number>();
+    const seeking = ref(false);
+    const seekPosition = ref<number>();
 
-    const duration = computed(() => millisecondToTimer(trackDuration.value));
-    const position = computed(() => {
-      if (mouseDown.value) {
-        return millisecondToTimer(selectedPosition.value);
+    const durationFormatted = computed(() =>
+      millisecondToTimer(trackDuration.value)
+    );
+    const positionFormatted = computed(() => {
+      if (seeking.value) {
+        return millisecondToTimer(seekPosition.value);
       }
 
       return millisecondToTimer(trackPosition.value);
     });
-    const fillWidth = computed(() => {
-      if (mouseDown.value) {
-        return (selectedPosition.value / trackDuration.value) * 100 + "%";
-      }
-
-      return (trackPosition.value / trackDuration.value) * 100 + "%";
-    });
 
     function setPosition(x: number) {
-      const position =
-        ((x - progressBar.value.offsetLeft) / progressBar.value.clientWidth) *
-        trackDuration.value;
-
-      if (position < 0) {
-        selectedPosition.value = 0;
-      } else if (position > trackDuration.value) {
-        selectedPosition.value = trackDuration.value;
-      } else {
-        selectedPosition.value = position;
-      }
+      seeking.value = false;
+      seek(x);
+      trackPosition.value = x;
     }
 
-    function mouseDownHandler(e: MouseEvent) {
-      if (!e.composedPath().includes(progressBar.value)) return;
-
-      mouseDown.value = true;
-      setPosition(e.clientX);
+    function seekingAt(x: number) {
+      seekPosition.value = x;
     }
-
-    function mouseMoveHandler(e: MouseEvent) {
-      if (!mouseDown.value) return;
-      setPosition(e.clientX);
-    }
-
-    function mouseUpHandler() {
-      mouseDown.value = false;
-      if (selectedPosition.value) {
-        trackPosition.value = selectedPosition.value;
-        seek(selectedPosition.value);
-        selectedPosition.value = null;
-      }
-    }
-
-    onMounted(() => {
-      window.addEventListener("mousedown", mouseDownHandler);
-      window.addEventListener("mousemove", mouseMoveHandler);
-      window.addEventListener("mouseup", mouseUpHandler);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener("mousedown", mouseDownHandler);
-      window.removeEventListener("mousemove", mouseMoveHandler);
-      window.removeEventListener("mouseup", mouseUpHandler);
-    });
 
     return {
-      duration,
-      position,
-      fillWidth,
-      progressBar,
-      mouseDown
+      durationFormatted,
+      positionFormatted,
+      seeking,
+      trackDuration,
+      trackPosition,
+      setPosition,
+      seekingAt
     };
   }
 });
@@ -109,53 +67,8 @@ export default defineComponent({
   display: flex;
   align-items: center;
 
-  .progress-bar {
+  .range-slider {
     flex-grow: 1;
-    padding: 2px 0;
-    position: relative;
-
-    .track {
-      width: 100%;
-      height: 4px;
-      border-radius: 2px;
-      background-color: #535353;
-      pointer-events: none;
-    }
-
-    .fill {
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 4px;
-      border-radius: 2px;
-      background-color: #b3b3b3;
-      pointer-events: none;
-
-      &:after {
-        content: "";
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background-color: white;
-        position: absolute;
-        top: 50%;
-        left: 100%;
-        transform: translate(-50%, -50%);
-        display: none;
-      }
-    }
-
-    &:hover,
-    &.active {
-      .fill {
-        background-color: #1db954;
-
-        &:after {
-          display: block;
-        }
-      }
-    }
   }
 
   p {
