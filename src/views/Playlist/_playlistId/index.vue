@@ -12,15 +12,16 @@
 
     <main>
       <div class="playlist-actions">
-        <div class="play">
-          <img src="@/assets/icons/play.svg" />
+        <div class="toggle-play" @click="toggleContextPlay">
+          <img v-if="isContextPlaying" src="@/assets/icons/pause.svg" />
+          <img v-else src="@/assets/icons/play.svg" />
         </div>
       </div>
 
       <transition name="fade">
         <teleport to="#header-teleport" v-if="fixed">
           <div class="header-actions">
-            <div class="play">
+            <div class="toggle-play" @click="toggleContextPlay">
               <img src="@/assets/icons/play.svg" />
             </div>
             <span>{{ playlist.name }}</span>
@@ -64,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { API } from "@/api";
 import { Playlist, Track } from "@/models";
@@ -72,7 +73,7 @@ import TrackListHeader from "@/components/TrackList/TrackListHeader/index.vue";
 import PlaylistTrackItem from "@/components/TrackList/TrackItem/PlaylistTrackItem/index.vue";
 import RecommendationTrackItem from "@/components/TrackList/TrackItem/RecommendationTrackItem/index.vue";
 import TrackListTitles from "@/components/TrackList/TrackListTitles/index.vue";
-import {usePlayer} from "@/hooks/player";
+import { usePlayer, usePlayerStatus, usePlayerTrackData } from "@/hooks/player";
 
 export default defineComponent({
   components: {
@@ -86,7 +87,16 @@ export default defineComponent({
     const recommended = ref<Track[]>();
     const fixed = ref(false);
     const { currentRoute } = useRouter();
-    const { playPlaylist } = usePlayer();
+    const { playPlaylist, togglePlay } = usePlayer();
+    const { contextUri } = usePlayerTrackData();
+    const { isPlaying } = usePlayerStatus();
+
+    const isCurrentContext = computed(
+      () => playlist.value?.uri === contextUri.value
+    );
+    const isContextPlaying = computed(
+      () => playlist.value?.uri === contextUri.value && isPlaying.value
+    );
 
     const playlistResponse = await API.playlist.get(
       currentRoute.value.params.playlistId as string
@@ -104,14 +114,24 @@ export default defineComponent({
       seed_tracks: encodeURIComponent(tracks[0])
     });
 
+    function toggleContextPlay() {
+      if (isCurrentContext.value) {
+        togglePlay();
+      } else {
+        playPlaylist(playlist.value.uri);
+      }
+    }
+
     recommended.value = recommendedResponse.tracks;
     playlist.value = playlistResponse;
 
     return {
+      isContextPlaying,
       playlist,
       recommended,
       fixed,
-      playPlaylist
+      playPlaylist,
+      toggleContextPlay
     };
   }
 });
@@ -129,7 +149,7 @@ export default defineComponent({
     .playlist-actions {
       padding: 24px 0;
 
-      .play {
+      .toggle-play {
         width: 56px;
         height: 56px;
         border-radius: 50%;

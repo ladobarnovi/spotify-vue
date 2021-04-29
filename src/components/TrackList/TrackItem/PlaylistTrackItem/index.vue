@@ -25,7 +25,7 @@ import TrackItemTitle from "../TrackItemTitle.vue";
 import TrackItemAlbum from "../TrackItemAlbum.vue";
 import TrackItemDate from "../TrackItemDate.vue";
 import TrackItemDuration from "../TrackItemDuration.vue";
-import { usePlayer } from "@/hooks/player";
+import {usePlayer, usePlayerStatus, usePlayerTrackData} from "@/hooks/player";
 
 export default defineComponent({
   components: {
@@ -42,10 +42,12 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    const { currentTrackId, isPlaying, isPaused, togglePlay } = usePlayer();
+    const { togglePlay } = usePlayer();
+    const { isPlaying, isPaused } = usePlayerStatus();
+    const { trackId } = usePlayerTrackData();
 
     const isCurrentTrack = computed(
-      () => currentTrackId.value === props.data.track.id
+      () => trackId.value === props.data.track.id
     );
 
     function play() {

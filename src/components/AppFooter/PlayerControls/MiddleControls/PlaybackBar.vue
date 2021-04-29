@@ -15,14 +15,15 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 import { useTimer } from "@/hooks/timer";
-import { usePlayer } from "@/hooks/player";
+import { usePlayer, usePlayerTrackData } from "@/hooks/player";
 import RangeSlider from "@/components/Common/RangeSlider.vue";
 
 export default defineComponent({
   components: { RangeSlider },
   setup() {
     const { millisecondToTimer } = useTimer();
-    const { trackPosition, trackDuration, seek } = usePlayer();
+    const { seek } = usePlayer();
+    const { trackPosition, trackDuration } = usePlayerTrackData();
 
     const seeking = ref(false);
     const seekPosition = ref<number>();

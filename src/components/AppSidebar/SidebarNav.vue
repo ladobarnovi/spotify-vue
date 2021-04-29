@@ -22,8 +22,6 @@
     </ul>
 
     <div class="playlist">
-      <p class="title">Playlists</p>
-
       <ul class="actions">
         <li class="create-playlist action">
           <svg class="_28160026e8be14060f22ead8e2af36f5-scss" shape-rendering="crispEdges" viewBox="0 0 36 36"><path d="m28 20h-8v8h-4v-8h-8v-4h8v-8h4v8h8v4z"></path></svg>
@@ -92,15 +90,7 @@ export default defineComponent({
   }
 
   .playlist {
-    padding: 0 22px 0 24px;
-
-    .title {
-      text-transform: uppercase;
-      font-size: 11px;
-      color: #b3b3b3;
-      letter-spacing: 0.16em;
-      padding: 26px 0 19px;
-    }
+    padding: 26px 22px 0 24px;
 
     .actions {
       margin-bottom: 8px;
@@ -133,8 +123,8 @@ export default defineComponent({
 
         svg {
           background-color: var(--color-inverted);
-          width: 32px;
-          height: 32px;
+          width: 24px;
+          height: 24px;
           padding: 4px;
           box-sizing: border-box;
 
@@ -147,8 +137,8 @@ export default defineComponent({
       .liked-songs {
         .icon {
           background-image: linear-gradient(135deg, #450af5, #c4efd9);
-          width: 32px;
-          height: 32px;
+          width: 24px;
+          height: 24px;
 
           svg {
             width: 14px;

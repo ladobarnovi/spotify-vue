@@ -55,7 +55,7 @@ import PlaylistTrackItem from "@/components/TrackList/TrackItem/PlaylistTrackIte
 import TrackListTitles from "@/components/TrackList/TrackListTitles/index.vue";
 import TrackListHeader from "@/components/TrackList/TrackListHeader/index.vue";
 import CardsRow from "@/components/Cards/CardsRow.vue";
-import {usePlayer} from "@/hooks/player";
+import {usePlayer, usePlayerStatus, usePlayerTrackData} from "@/hooks/player";
 
 export default defineComponent({
   components: {
@@ -65,10 +65,12 @@ export default defineComponent({
     CardsRow
   },
   async setup() {
-    const { currentRoute } = useRouter();
-    const { playPlaylist } = usePlayer();
     const album = ref<Album>();
     const moreAlbums = ref<Album[]>();
+    const { currentRoute } = useRouter();
+    const { playPlaylist, togglePlay } = usePlayer();
+    const { contextUri } = usePlayerTrackData();
+    const { isPlaying } = usePlayerStatus();
 
     album.value = await API.albums.get({
       id: currentRoute.value.params.albumId as string

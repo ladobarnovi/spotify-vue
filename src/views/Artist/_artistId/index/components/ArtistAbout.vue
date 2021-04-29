@@ -194,6 +194,8 @@ export default defineComponent({
       display: flex;
 
       .left {
+        flex-grow: 1;
+
         .followers,
         .listeners {
           margin-bottom: 40px;
@@ -210,6 +212,7 @@ export default defineComponent({
             font-weight: 400;
             line-height: 16px;
             letter-spacing: normal;
+            color: #b3b3b3;
           }
         }
 
@@ -276,6 +279,7 @@ export default defineComponent({
         font-weight: 400;
         line-height: 16px;
         letter-spacing: normal;
+        width: 500px;
       }
     }
   }

@@ -82,20 +82,19 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { usePlayer } from "@/hooks/player";
+import {usePlayer, usePlayerStatus, usePlayerTrackData} from "@/hooks/player";
 
 export default defineComponent({
   setup() {
     const {
       togglePlay,
-      isPlaying,
       playNext,
       playPrev,
       toggleShuffle,
       toggleRepeat,
-      isShuffle,
-      isRepeat
     } = usePlayer();
+
+    const { isPlaying, isShuffle, isRepeat } = usePlayerStatus();
 
     return {
       togglePlay,
