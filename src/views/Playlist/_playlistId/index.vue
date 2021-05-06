@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { API } from "@/api";
 import { Playlist, Track } from "@/models";
@@ -61,7 +61,7 @@ import TrackListHeader from "@/components/TrackList/TrackListHeader/index.vue";
 import PlaylistTrackItem from "@/components/TrackList/TrackItem/PlaylistTrackItem/index.vue";
 import RecommendationTrackItem from "@/components/TrackList/TrackItem/RecommendationTrackItem/index.vue";
 import TrackListTitles from "@/components/TrackList/TrackListTitles/index.vue";
-import { usePlayer, usePlayerStatus, usePlayerTrackData } from "@/hooks/player";
+import { usePlayer } from "@/hooks/player";
 import ContextTogglePlay from "@/components/TrackList/ContextTogglePlay.vue";
 
 export default defineComponent({

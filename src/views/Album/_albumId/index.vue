@@ -9,7 +9,11 @@
     />
 
     <main>
-      <ContextTogglePlay :context-uri="album.uri" :context-name="album.name" :fixed="fixed"  />
+      <ContextTogglePlay
+        :context-uri="album.uri"
+        :context-name="album.name"
+        :fixed="fixed"
+      />
 
       <div class="track-list">
         <div class="main-list">
@@ -51,7 +55,7 @@ import PlaylistTrackItem from "@/components/TrackList/TrackItem/PlaylistTrackIte
 import TrackListTitles from "@/components/TrackList/TrackListTitles/index.vue";
 import TrackListHeader from "@/components/TrackList/TrackListHeader/index.vue";
 import CardsRow from "@/components/Cards/CardsRow.vue";
-import {usePlayer, usePlayerStatus, usePlayerTrackData} from "@/hooks/player";
+import { usePlayer, usePlayerStatus, usePlayerTrackData } from "@/hooks/player";
 import ContextTogglePlay from "@/components/TrackList/ContextTogglePlay.vue";
 
 export default defineComponent({
@@ -67,9 +71,7 @@ export default defineComponent({
     const moreAlbums = ref<Album[]>();
     const fixed = ref(false);
     const { currentRoute } = useRouter();
-    const { playPlaylist, togglePlay } = usePlayer();
-    const { contextUri } = usePlayerTrackData();
-    const { isPlaying } = usePlayerStatus();
+    const { playPlaylist } = usePlayer();
 
     album.value = await API.albums.get({
       id: currentRoute.value.params.albumId as string

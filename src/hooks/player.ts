@@ -23,6 +23,9 @@ const playerTrackData = reactive({
   trackId: null,
   trackDuration: null,
   trackPosition: null,
+  trackName: null,
+  trackAlbum: null,
+  trackArtists: null,
   contextUri: null
 });
 
@@ -43,20 +46,23 @@ const initPlayer = () => {
     });
 
     player.value?.addListener("player_state_changed", state => {
-      // console.log(state);
+      console.log(state);
 
       playerStatus.isPlaying = !state.paused;
       playerStatus.isPaused = state.paused;
       playerStatus.isShuffle = state.shuffle;
       playerStatus.isRepeat = state.repeat_mode;
 
-      playerTrackData.trackId = state.track_window.current_track.id;
+      const { current_track } = state.track_window;
+
+      playerTrackData.trackId = current_track.id;
+      playerTrackData.trackAlbum = current_track.album;
+      playerTrackData.trackArtists = current_track.artists;
       playerTrackData.trackDuration = state.duration;
       playerTrackData.trackPosition = state.position;
       playerTrackData.contextUri = state.context.uri;
 
-      const linkedFrom = (state.track_window.current_track as any).linked_from
-        .id;
+      const linkedFrom = (current_track as any).linked_from.id;
       if (linkedFrom) {
         playerTrackData.trackId = linkedFrom;
       }
