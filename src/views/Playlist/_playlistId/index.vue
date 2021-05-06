@@ -11,23 +11,11 @@
     />
 
     <main>
-      <div class="playlist-actions">
-        <div class="toggle-play" @click="toggleContextPlay">
-          <img v-if="isContextPlaying" src="@/assets/icons/pause.svg" />
-          <img v-else src="@/assets/icons/play.svg" />
-        </div>
-      </div>
-
-      <transition name="fade">
-        <teleport to="#header-teleport" v-if="fixed">
-          <div class="header-actions">
-            <div class="toggle-play" @click="toggleContextPlay">
-              <img src="@/assets/icons/play.svg" />
-            </div>
-            <span>{{ playlist.name }}</span>
-          </div>
-        </teleport>
-      </transition>
+      <ContextTogglePlay
+        :context-uri="playlist.uri"
+        :context-name="playlist.name"
+        :fixed="fixed"
+      />
 
       <div class="track-list">
         <div class="main-list">
@@ -74,9 +62,11 @@ import PlaylistTrackItem from "@/components/TrackList/TrackItem/PlaylistTrackIte
 import RecommendationTrackItem from "@/components/TrackList/TrackItem/RecommendationTrackItem/index.vue";
 import TrackListTitles from "@/components/TrackList/TrackListTitles/index.vue";
 import { usePlayer, usePlayerStatus, usePlayerTrackData } from "@/hooks/player";
+import ContextTogglePlay from "@/components/TrackList/ContextTogglePlay.vue";
 
 export default defineComponent({
   components: {
+    ContextTogglePlay,
     PlaylistTrackItem,
     TrackListHeader,
     RecommendationTrackItem,
@@ -87,16 +77,7 @@ export default defineComponent({
     const recommended = ref<Track[]>();
     const fixed = ref(false);
     const { currentRoute } = useRouter();
-    const { playPlaylist, togglePlay } = usePlayer();
-    const { contextUri } = usePlayerTrackData();
-    const { isPlaying } = usePlayerStatus();
-
-    const isCurrentContext = computed(
-      () => playlist.value?.uri === contextUri.value
-    );
-    const isContextPlaying = computed(
-      () => playlist.value?.uri === contextUri.value && isPlaying.value
-    );
+    const { playPlaylist } = usePlayer();
 
     const playlistResponse = await API.playlist.get(
       currentRoute.value.params.playlistId as string
@@ -114,24 +95,14 @@ export default defineComponent({
       seed_tracks: encodeURIComponent(tracks[0])
     });
 
-    function toggleContextPlay() {
-      if (isCurrentContext.value) {
-        togglePlay();
-      } else {
-        playPlaylist(playlist.value.uri);
-      }
-    }
-
     recommended.value = recommendedResponse.tracks;
     playlist.value = playlistResponse;
 
     return {
-      isContextPlaying,
       playlist,
       recommended,
       fixed,
-      playPlaylist,
-      toggleContextPlay
+      playPlaylist
     };
   }
 });
@@ -145,26 +116,6 @@ export default defineComponent({
     position: relative;
     z-index: 2;
     padding: 0 32px;
-
-    .playlist-actions {
-      padding: 24px 0;
-
-      .toggle-play {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        margin-right: 32px;
-        background-color: var(--green);
-
-        img {
-          position: relative;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          display: block;
-        }
-      }
-    }
 
     .track-list {
       .track-list-body {
@@ -215,38 +166,6 @@ export default defineComponent({
         }
       }
     }
-  }
-}
-</style>
-
-<style lang="scss">
-.header-actions {
-  display: flex;
-  align-items: center;
-
-  .play {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 16px;
-    background-color: var(--green);
-    position: relative;
-
-    img {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 16px;
-      height: 16px;
-    }
-  }
-
-  span {
-    font-weight: 700;
-    line-height: 28px;
-    letter-spacing: -0.04em;
-    font-size: 24px;
   }
 }
 </style>

@@ -9,15 +9,11 @@
     />
 
     <main>
-      <div class="playlist-actions">
-        <div class="play">
-          <img src="@/assets/icons/play.svg" />
-        </div>
-      </div>
+      <ContextTogglePlay :context-uri="album.uri" :context-name="album.name" :fixed="fixed"  />
 
       <div class="track-list">
         <div class="main-list">
-          <TrackListTitles class="album" />
+          <TrackListTitles class="album" @fixed="fixed = $event" />
 
           <div class="main-list-body">
             <PlaylistTrackItem
@@ -56,9 +52,11 @@ import TrackListTitles from "@/components/TrackList/TrackListTitles/index.vue";
 import TrackListHeader from "@/components/TrackList/TrackListHeader/index.vue";
 import CardsRow from "@/components/Cards/CardsRow.vue";
 import {usePlayer, usePlayerStatus, usePlayerTrackData} from "@/hooks/player";
+import ContextTogglePlay from "@/components/TrackList/ContextTogglePlay.vue";
 
 export default defineComponent({
   components: {
+    ContextTogglePlay,
     TrackListHeader,
     TrackListTitles,
     PlaylistTrackItem,
@@ -67,6 +65,7 @@ export default defineComponent({
   async setup() {
     const album = ref<Album>();
     const moreAlbums = ref<Album[]>();
+    const fixed = ref(false);
     const { currentRoute } = useRouter();
     const { playPlaylist, togglePlay } = usePlayer();
     const { contextUri } = usePlayerTrackData();
@@ -82,7 +81,8 @@ export default defineComponent({
     return {
       album,
       moreAlbums,
-      playPlaylist
+      playPlaylist,
+      fixed
     };
   }
 });
@@ -93,26 +93,6 @@ main {
   position: relative;
   z-index: 2;
   padding: 0 32px 32px;
-
-  .playlist-actions {
-    padding: 24px 0;
-
-    .play {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      margin-right: 32px;
-      background-color: var(--green);
-
-      img {
-        position: relative;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: block;
-      }
-    }
-  }
 
   .copyrights {
     padding-top: 32px;
