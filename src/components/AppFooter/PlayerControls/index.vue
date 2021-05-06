@@ -30,7 +30,7 @@ export default defineComponent({
 .player-controls {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   height: 100%;
+  padding: 0 16px;
 }
 </style>

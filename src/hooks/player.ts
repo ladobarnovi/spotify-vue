@@ -16,7 +16,8 @@ const playerStatus = reactive({
   isPlaying: false,
   isPaused: false,
   isShuffle: false,
-  isRepeat: Repeat.NoRepeat
+  isRepeat: Repeat.NoRepeat,
+  isExpanded: false
 });
 
 const playerTrackData = reactive({
@@ -56,6 +57,7 @@ const initPlayer = () => {
       const { current_track } = state.track_window;
 
       playerTrackData.trackId = current_track.id;
+      playerTrackData.trackName = current_track.name
       playerTrackData.trackAlbum = current_track.album;
       playerTrackData.trackArtists = current_track.artists;
       playerTrackData.trackDuration = state.duration;

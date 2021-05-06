@@ -77,7 +77,7 @@ body {
   flex-wrap: wrap;
 
   .router-container {
-    width: calc(100% - 232px);
+    width: calc(100% - 240px);
     height: calc(100% - 90px);
     position: relative;
 

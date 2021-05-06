@@ -8,6 +8,7 @@
 
     <SidebarNav />
     <SidebarPlaylist />
+    <SidebarCover />
   </nav>
 </template>
 
@@ -15,10 +16,12 @@
 import { defineComponent } from "vue";
 import SidebarNav from "@/components/AppSidebar/SidebarNav.vue";
 import SidebarPlaylist from "@/components/AppSidebar/SidebarPlaylist.vue";
+import SidebarCover from "@/components/AppSidebar/SidebarCover.vue";
 
 export default defineComponent({
   name: "AppSidebar",
   components: {
+    SidebarCover,
     SidebarPlaylist,
     SidebarNav
   },
@@ -30,7 +33,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 #app-sidebar {
-  width: 232px;
+  width: 240px;
   background-color: black;
   height: calc(100% - 90px);
   display: flex;

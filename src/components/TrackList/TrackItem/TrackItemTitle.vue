@@ -11,7 +11,9 @@
             v-for="(artist, index) in artists"
             :key="index"
             :to="`/artist/${artist.id}`"
-          >{{ artist.name }}</LinkUnderline>
+          >
+            {{ artist.name }}
+          </LinkUnderline>
         </p>
       </div>
     </div>

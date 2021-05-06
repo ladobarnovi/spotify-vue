@@ -8,7 +8,7 @@
   >
     <img class="profile-image" :src="data.images[0].url" />
     <p>{{ data.display_name }}</p>
-    <img src="@/assets/icons/chevron-down.svg" class="chevron" />
+    <img src="@/assets/icons/triangle-down.svg" class="chevron" />
 
     <ul v-if="active" class="menu">
       <li>Account</li>
