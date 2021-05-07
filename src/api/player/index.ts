@@ -28,7 +28,7 @@ export default {
       params
     }),
 
-  player: () =>
+  get: () =>
     apiCall({
       url: "/me/player",
       method: "GET"
@@ -39,6 +39,21 @@ export default {
       url: "/me/player/repeat",
       method: "PUT",
       params
+    }),
+
+  devices: () =>
+    apiCall<DevicesResponse>({
+      url: "/me/player/devices",
+      method: "GET"
+    }),
+
+  put: (device_ids: string[]) =>
+    apiCall({
+      url: "/me/player",
+      method: "PUT",
+      data: {
+        device_ids
+      }
     })
 };
 
@@ -65,3 +80,15 @@ interface CurrentPlayingResponse {
   item: Album | Playlist | Track;
   progress_ms: number;
 }
+
+interface DevicesResponse {
+  devices: {
+    id: string;
+    is_active: boolean;
+    is_private_session: boolean;
+    is_restricted: boolean;
+    name: string;
+    type: string;
+    volume_percent: number;
+  }[]
+};

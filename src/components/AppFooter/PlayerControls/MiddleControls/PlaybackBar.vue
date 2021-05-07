@@ -3,10 +3,10 @@
     <p class="current">{{ positionFormatted }}</p>
     <RangeSlider
       :max-value="trackDuration"
-      :current-value="trackPosition"
-      @click="seeking = true"
-      @seeking="seekingAt"
-      @submit="setPosition"
+      :value="trackPosition"
+      @slideStart="seeking = true"
+      @slideEnd="setPosition"
+      v-model:position="seekPosition"
     />
     <p class="duration">{{ durationFormatted }}</p>
   </div>
@@ -45,10 +45,6 @@ export default defineComponent({
       trackPosition.value = x;
     }
 
-    function seekingAt(x: number) {
-      seekPosition.value = x;
-    }
-
     return {
       durationFormatted,
       positionFormatted,
@@ -56,7 +52,7 @@ export default defineComponent({
       trackDuration,
       trackPosition,
       setPosition,
-      seekingAt
+      seekPosition
     };
   }
 });

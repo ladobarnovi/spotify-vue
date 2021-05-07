@@ -8,6 +8,7 @@
 
     <SidebarNav />
     <SidebarPlaylist />
+    <SidebarInstall />
     <SidebarCover />
   </nav>
 </template>
@@ -17,10 +18,12 @@ import { defineComponent } from "vue";
 import SidebarNav from "@/components/AppSidebar/SidebarNav.vue";
 import SidebarPlaylist from "@/components/AppSidebar/SidebarPlaylist.vue";
 import SidebarCover from "@/components/AppSidebar/SidebarCover.vue";
+import SidebarInstall from "@/components/AppSidebar/SidebarInstall.vue";
 
 export default defineComponent({
   name: "AppSidebar",
   components: {
+    SidebarInstall,
     SidebarCover,
     SidebarPlaylist,
     SidebarNav

@@ -5,15 +5,15 @@ import AlbumId from "@/views/Album/_albumId/index.vue";
 export default () => {
   router.addRoute({
     path: "/album",
-    component: Album as any,
+    component: Album,
     children: [
       {
         path: "",
-        redirect: "/",
+        redirect: "/"
       },
       {
         path: ":albumId",
-        component: AlbumId as any
+        component: AlbumId
       }
     ]
   });

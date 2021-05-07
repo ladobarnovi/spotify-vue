@@ -1,8 +1,7 @@
 <template>
-  <div class="range-slider" onmousedown="return false">
+  <div class="range-slider" :class="{ active: mouseDown }" onmousedown="return false">
     <div
       class="slider-wrapper"
-      :class="{ active: mouseDown }"
       ref="progressBar"
     >
       <div class="track"></div>
@@ -30,7 +29,7 @@ export default defineComponent({
       type: Number,
       required: true
     },
-    currentValue: {
+    value: {
       type: Number,
       required: true
     }
@@ -45,7 +44,7 @@ export default defineComponent({
         return (position.value / props.maxValue) * 100 + "%";
       }
 
-      return (props.currentValue / props.maxValue) * 100 + "%";
+      return (props.value / props.maxValue) * 100 + "%";
     });
 
     function setPosition(x: number) {
@@ -62,11 +61,12 @@ export default defineComponent({
       }
 
       emit("seeking", position.value);
+      emit("update:position", position.value);
     }
 
     function mouseDownHandler(e: MouseEvent) {
       if (!e.composedPath().includes(progressBar.value)) return;
-      emit("click");
+      emit("slideStart");
 
       mouseDown.value = true;
       setPosition(e.clientX);
@@ -76,13 +76,14 @@ export default defineComponent({
       mouseDown.value = false;
 
       if (position.value) {
-        emit("submit", position.value);
+        emit("slideEnd", position.value);
         position.value = null;
       }
     }
 
     function mouseMoveHandler(e: MouseEvent) {
       if (!mouseDown.value) return;
+      emit("slideMove");
       setPosition(e.clientX);
     }
 
@@ -108,50 +109,54 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.slider-wrapper {
-  flex-grow: 1;
-  padding: 2px 0;
-  position: relative;
+.range-slider {
+  .slider-wrapper {
+    flex-grow: 1;
+    padding: 2px 0;
+    position: relative;
 
-  .track {
-    width: 100%;
-    height: 4px;
-    border-radius: 2px;
-    background-color: #535353;
-    pointer-events: none;
-  }
+    .track {
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background-color: #535353;
+      pointer-events: none;
+    }
 
-  .fill {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 4px;
-    border-radius: 2px;
-    background-color: #b3b3b3;
-    pointer-events: none;
-
-    &:after {
-      content: "";
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background-color: white;
+    .fill {
       position: absolute;
+      left: 0;
       top: 50%;
-      left: 100%;
-      transform: translate(-50%, -50%);
-      display: none;
+      transform: translateY(-50%);
+      height: 4px;
+      border-radius: 2px;
+      background-color: #b3b3b3;
+      pointer-events: none;
+
+      &:after {
+        content: "";
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: white;
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        transform: translate(-50%, -50%);
+        display: none;
+      }
     }
   }
 
   &:hover,
   &.active {
-    .fill {
-      background-color: #1db954;
+    .slider-wrapper {
+      .fill {
+        background-color: #1db954;
 
-      &:after {
-        display: block;
+        &:after {
+          display: block;
+        }
       }
     }
   }

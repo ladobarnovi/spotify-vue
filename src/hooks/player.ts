@@ -1,6 +1,9 @@
 import { ref, reactive, toRefs } from "vue";
 import { API } from "@/api";
 
+export const MIN_VOLUME = 0.0001;
+export const MAX_VOLUME = 1;
+
 export enum Repeat {
   NoRepeat,
   RepeatPlaylist,
@@ -17,7 +20,9 @@ const playerStatus = reactive({
   isPaused: false,
   isShuffle: false,
   isRepeat: Repeat.NoRepeat,
-  isExpanded: false
+  isExpanded: false,
+  volume: 0.5,
+  savedVolume: null
 });
 
 const playerTrackData = reactive({
@@ -32,6 +37,8 @@ const playerTrackData = reactive({
 
 const initPlayer = () => {
   window.onSpotifyWebPlaybackSDKReady = async () => {
+    const { devices } = await API.player.devices();
+
     player.value = new Spotify.Player({
       name: "Custom Web Player",
       getOAuthToken(cb: (token: string) => void) {
@@ -42,13 +49,15 @@ const initPlayer = () => {
 
     player.value?.addListener("ready", ({ device_id }) => {
       deviceId.value = device_id;
-      player.value.getCurrentState().then(state => console.log(state));
-      API.player.player();
+      player.value.getVolume().then(r => console.log(r))
+      const activeDevice = devices.find(d => d.is_active);
+      if (activeDevice) {
+        API.player.put([deviceId.value]);
+      }
     });
 
     player.value?.addListener("player_state_changed", state => {
       console.log(state);
-
       playerStatus.isPlaying = !state.paused;
       playerStatus.isPaused = state.paused;
       playerStatus.isShuffle = state.shuffle;
@@ -57,7 +66,7 @@ const initPlayer = () => {
       const { current_track } = state.track_window;
 
       playerTrackData.trackId = current_track.id;
-      playerTrackData.trackName = current_track.name
+      playerTrackData.trackName = current_track.name;
       playerTrackData.trackAlbum = current_track.album;
       playerTrackData.trackArtists = current_track.artists;
       playerTrackData.trackDuration = state.duration;
@@ -108,6 +117,22 @@ const toggleShuffle = async () => {
   });
 };
 
+const setVolume = async (v: number) => {
+  console.log("Set Volume", v);
+  await player.value.setVolume(v);
+  playerStatus.volume = v;
+};
+
+const toggleVolume = async () => {
+  console.log("Toggle Volume");
+  if (playerStatus.volume > MIN_VOLUME) {
+    playerStatus.savedVolume = playerStatus.volume;
+    await setVolume(MIN_VOLUME);
+  } else {
+    await setVolume(playerStatus.savedVolume);
+  }
+};
+
 const toggleRepeat = async () => {
   let state = "off";
 
@@ -153,7 +178,9 @@ export const usePlayer = () => {
     playNext,
     playPrev,
     toggleShuffle,
-    toggleRepeat
+    toggleRepeat,
+    toggleVolume,
+    setVolume
   };
 };
 
