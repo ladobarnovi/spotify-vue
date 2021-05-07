@@ -5,15 +5,15 @@ import PlaylistId from "./_playlistId/index.vue";
 export default () => {
   router.addRoute({
     path: "/playlist",
-    component: Playlist as any,
+    component: Playlist,
     children: [
       {
         path: "",
-        redirect: "/",
+        redirect: "/"
       },
       {
         path: ":playlistId",
-        component: PlaylistId as any
+        component: PlaylistId
       }
     ]
   });

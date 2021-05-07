@@ -118,13 +118,13 @@ const toggleShuffle = async () => {
 };
 
 const setVolume = async (v: number) => {
-  console.log("Set Volume", v);
-  await player.value.setVolume(v);
-  playerStatus.volume = v;
+  if (player.value) {
+    await player.value.setVolume(v);
+    playerStatus.volume = v;
+  }
 };
 
 const toggleVolume = async () => {
-  console.log("Toggle Volume");
   if (playerStatus.volume > MIN_VOLUME) {
     playerStatus.savedVolume = playerStatus.volume;
     await setVolume(MIN_VOLUME);
