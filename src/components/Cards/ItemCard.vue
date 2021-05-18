@@ -1,7 +1,8 @@
 <template>
   <div class="item-card" :class="data.type" @click="redirect">
     <div class="image-container">
-      <img :src="data.images[0].url" />
+      <img v-if="data.images.length > 0" :src="data.images[0].url" />
+      <img v-else class="blank-image" src="@/assets/icons/note.svg" />
     </div>
 
     <div class="titles">
@@ -46,6 +47,8 @@ export default defineComponent({
     const releaseDate = computed(() => {
       return moment((props.data as Album).release_date).format("YYYY");
     });
+
+    console.log(props.data)
 
     function redirect() {
       switch (props.data.type as ItemType) {
@@ -93,6 +96,7 @@ export default defineComponent({
 
   .image-container {
     width: 100%;
+    background-color: #333;
     padding-bottom: 100%;
     border-radius: 2px;
     overflow: hidden;
@@ -108,6 +112,10 @@ export default defineComponent({
       height: 100%;
       object-fit: cover;
       object-position: center;
+
+      &.blank-image {
+        opacity: 0.6;
+      }
     }
   }
 

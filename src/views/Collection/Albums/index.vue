@@ -11,7 +11,7 @@ import { API } from "@/api";
 import CardsRow from "@/components/Cards/CardsRow.vue";
 
 export default defineComponent({
-  components: {CardsRow},
+  components: { CardsRow },
   async setup() {
     const albums = ref<any>();
 

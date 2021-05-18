@@ -4,7 +4,7 @@
       :name="playlist.name"
       :type="playlist.type"
       :description="playlist.description"
-      :image="playlist.images[0].url"
+      :image="playlist.images[0]?.url"
       :owner="playlist.owner"
       :followers="playlist.followers.total"
       :tracks="playlist.tracks.items.map(i => i.track)"
@@ -12,12 +12,13 @@
 
     <main>
       <ContextTogglePlay
+        v-if="playlist.tracks.items.length > 0"
         :context-uri="playlist.uri"
         :context-name="playlist.name"
         :fixed="fixed"
       />
 
-      <div class="track-list">
+      <div v-if="playlist.tracks.items.length > 0" class="track-list">
         <div class="main-list">
           <TrackListTitles @fixed="fixed = $event" />
 
@@ -31,7 +32,7 @@
           </div>
         </div>
 
-        <div class="recommended-list-body">
+        <div v-if="recommended" class="recommended-list-body">
           <div class="recommended-list-title">
             <p>Recommended</p>
             <p>Based on what's in this playlist</p>
@@ -88,14 +89,17 @@ export default defineComponent({
     );
     const tracks = playlistResponse.tracks.items.map(i => i.track.id);
 
-    const recommendedResponse = await API.recommendations.get({
-      limit: 10,
-      seed_artists: encodeURIComponent(artists[0]),
-      seed_genres: "metal",
-      seed_tracks: encodeURIComponent(tracks[0])
-    });
+    if (artists.length > 0) {
+      const recommendedResponse = await API.recommendations.get({
+        limit: 10,
+        seed_artists: encodeURIComponent(artists[0]),
+        seed_genres: "metal",
+        seed_tracks: encodeURIComponent(tracks[0])
+      });
 
-    recommended.value = recommendedResponse.tracks;
+      recommended.value = recommendedResponse.tracks;
+    }
+
     playlist.value = playlistResponse;
 
     return {

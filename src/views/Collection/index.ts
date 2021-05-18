@@ -4,11 +4,12 @@ import Playlists from "./Playlists/index.vue";
 import Artists from "./Artists/index.vue";
 import Podcasts from "./Podcasts/index.vue";
 import Albums from "./Albums/index.vue";
+import Tracks from "./Tracks/index.vue";
 
 export default () => {
   router.addRoute({
     path: "/collection",
-    component: Collection as any,
+    component: Collection,
     children: [
       {
         path: "",
@@ -16,19 +17,23 @@ export default () => {
       },
       {
         path: "playlists",
-        component: Playlists as any
+        component: Playlists
       },
       {
         path: "podcasts",
-        component: Podcasts as any
+        component: Podcasts
       },
       {
         path: "artists",
-        component: Artists as any
+        component: Artists
       },
       {
         path: "albums",
-        component: Albums as any
+        component: Albums
+      },
+      {
+        path: "tracks",
+        component: Tracks
       }
     ]
   });

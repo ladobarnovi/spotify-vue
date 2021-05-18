@@ -5,14 +5,16 @@ import store from "./store";
 import { checkAuth } from "@/utils/auth";
 import axios from "axios";
 
-// import {} from "spotify-web-playback-sdk";
-
 axios.defaults.baseURL = "https://api.spotify.com/v1";
 import initViews from "./views";
 import {API} from "@/api";
+import {useLibrary} from "@/hooks/library";
 initViews();
 
 checkAuth();
+
+const { fetchLikedSongs } = useLibrary()
+fetchLikedSongs()
 
 createApp(App)
   .use(store)

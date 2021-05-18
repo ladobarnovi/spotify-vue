@@ -51,9 +51,9 @@ const initPlayer = () => {
       deviceId.value = device_id;
       player.value.getVolume().then(r => console.log(r))
       const activeDevice = devices.find(d => d.is_active);
-      if (activeDevice) {
-        API.player.put([deviceId.value]);
-      }
+      // if (activeDevice) {
+      //   API.player.put([deviceId.value]);
+      // }
     });
 
     player.value?.addListener("player_state_changed", state => {

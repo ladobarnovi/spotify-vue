@@ -28,7 +28,7 @@ function getTokenFromUrl() {
     const { initPlayer } = usePlayer();
     initPlayer();
 
-    API.player.currentPlaying()
+    API.player.currentPlaying();
   }
 }
 

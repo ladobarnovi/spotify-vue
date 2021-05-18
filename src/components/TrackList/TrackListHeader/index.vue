@@ -2,7 +2,8 @@
   <header class="track-list-header" :style="style">
     <div class="content">
       <div class="image-container">
-        <img :src="image" />
+        <img v-if="image" :src="image" />
+        <img v-else src="@/assets/icons/note.svg" class="blank-image" />
       </div>
       <div class="info">
         <p class="type">{{ type }}</p>
@@ -92,10 +93,17 @@ export default defineComponent({
     const { getFullDuration } = useTrackList();
 
     imageColor(props.image as string).then(rgb => {
-      style.value = {
-        "background-color": `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`,
-        "box-shadow": `0px 13px 120px 120px rgba(${rgb.r}, ${rgb.g}, ${rgb.b},0.5)`
-      };
+      if (rgb) {
+        style.value = {
+          "background-color": `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`,
+          "box-shadow": `0px 13px 120px 120px rgba(${rgb.r}, ${rgb.g}, ${rgb.b},0.5)`
+        };
+      } else {
+        style.value = {
+          "background-color": `rgb(83, 83, 83)`,
+          "box-shadow": `0px 13px 120px 120px rgba(83, 83, 83, 0.25)`
+        };
+      }
     });
 
     const duration = computed<string>(() => {
@@ -144,12 +152,23 @@ header {
       margin-right: 24px;
       flex-shrink: 0;
       box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.5);
+      background-color: #282828;
 
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         object-position: center;
+
+        &.blank-image {
+          opacity: 0.5;
+          width: 128px;
+          height: 128px;
+          position: relative;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
       }
     }
 

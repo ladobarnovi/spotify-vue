@@ -4,6 +4,7 @@
       :image="data.track.album.images[2].url"
       :name="data.track.name"
       :artists="data.track.artists"
+      :explicit="data.track.explicit"
     />
     <TrackItemAlbum :album="data.track.album" />
     <TrackItemAdd :id="data.track.id" />

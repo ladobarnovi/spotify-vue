@@ -6,11 +6,15 @@ function imageToCanvas(imgUrl: string): Promise<HTMLImageElement> {
 
     img.onload = () => {
       resolve(img);
-    }
-  })
+    };
+  });
 }
 
 export async function imageColor(imgUrl: string) {
+  if (!imgUrl) {
+    return null;
+  }
+
   const canvas: HTMLCanvasElement = document.createElement("canvas");
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
@@ -47,7 +51,5 @@ export async function imageColor(imgUrl: string) {
     r: r / counter,
     g: g / counter,
     b: b / counter
-  }
+  };
 }
-
-

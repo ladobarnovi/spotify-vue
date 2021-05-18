@@ -44,6 +44,20 @@ export default {
       params
     }),
 
+  tracksPut: (params: { ids: string }) =>
+    apiCall({
+      url: "/me/tracks",
+      method: "PUT",
+      params
+    }),
+
+  tracksDelete: (params: { ids: string }) =>
+    apiCall({
+      url: "/me/tracks",
+      method: "DELETE",
+      params
+    }),
+
   showsGet: (params?: any) =>
     apiCall<MyShowsResponse>({
       url: "/me/shows",

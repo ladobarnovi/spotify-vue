@@ -8,30 +8,30 @@ import ArtistRelated from "./_artistId/related/index.vue";
 export default () => {
   router.addRoute({
     path: "/artist",
-    component: Artist as any,
+    component: Artist,
     children: [
       {
         path: "",
-        redirect: "/",
+        redirect: "/"
       },
       {
         path: ":artistId",
-        component: ArtistId as any,
+        component: ArtistId,
         children: [
           {
             path: "",
-            component: ArtistMain as any
+            component: ArtistMain
           },
           {
             path: "discography",
-            component: ArtistDiscography as any
+            component: ArtistDiscography
           },
           {
             path: "related",
-            component: ArtistRelated as any
+            component: ArtistRelated
           }
         ]
       }
     ]
-  })
-}
+  });
+};
