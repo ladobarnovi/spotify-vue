@@ -30,11 +30,12 @@ export default () => {
       {
         path: "albums",
         component: Albums
-      },
-      {
-        path: "tracks",
-        component: Tracks
       }
     ]
+  });
+
+  router.addRoute({
+    path: "/collection/tracks",
+    component: Tracks
   });
 };

@@ -6,7 +6,7 @@ import {
   Podcast,
   OwnerType,
   Playlist,
-  Track
+  Track, PlaylistTrackItem
 } from "@/models";
 
 export default {
@@ -126,10 +126,7 @@ interface MyArtistsResponse {
 }
 
 interface MyTracksResponse {
-  items: {
-    added_at: Date;
-    track: Track;
-  }[];
+  items: PlaylistTrackItem[];
 }
 
 interface MyShowsResponse {

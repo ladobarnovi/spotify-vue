@@ -66,7 +66,7 @@ export default defineComponent({
       isContextPlaying
     };
   }
-})
+});
 </script>
 
 <style scoped lang="scss">

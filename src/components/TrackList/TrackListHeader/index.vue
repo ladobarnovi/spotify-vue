@@ -19,9 +19,12 @@
         <p class="description" v-if="description" v-html="description"></p>
 
         <div class="group">
-          <LinkUnderline v-if="type === 'playlist'" to="/">
-            {{ owner.display_name }}
-          </LinkUnderline>
+          <div v-if="type === 'playlist'" class="owner">
+            <img v-if="owner.images?.length > 0" :src="owner.images[0].url" alt="">
+            <LinkUnderline to="/">
+              {{ owner?.display_name }}
+            </LinkUnderline>
+          </div>
           <div
             class="artist"
             v-else-if="type === 'album' || type === 'single' || type === 'ep'"
@@ -216,6 +219,7 @@ header {
 
       .group {
         display: flex;
+        align-items: center;
         color: hsla(0, 0%, 100%, 0.7);
         margin-top: 8px;
         font-weight: 500;
@@ -224,6 +228,18 @@ header {
         .link {
           color: white;
           font-weight: 700;
+        }
+
+        .owner {
+          display: flex;
+          align-items: center;
+
+          img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 4px;
+          }
         }
       }
     }

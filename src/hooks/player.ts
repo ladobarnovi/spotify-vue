@@ -49,11 +49,11 @@ const initPlayer = () => {
 
     player.value?.addListener("ready", ({ device_id }) => {
       deviceId.value = device_id;
-      player.value.getVolume().then(r => console.log(r))
+      player.value.getVolume().then(r => console.log(r));
       const activeDevice = devices.find(d => d.is_active);
-      // if (activeDevice) {
-      //   API.player.put([deviceId.value]);
-      // }
+      if (activeDevice) {
+        API.player.put([deviceId.value]);
+      }
     });
 
     player.value?.addListener("player_state_changed", state => {
@@ -150,10 +150,9 @@ const toggleRepeat = async () => {
   });
 };
 
-const playPlaylist = async (context_uri: string, position = 0) => {
+const playPlaylist = async (context_uri: string, position = 0, track_uri: string = null) => {
   const data = {
     context_uri,
-    position_ms: 0,
     offset: {
       position
     }
