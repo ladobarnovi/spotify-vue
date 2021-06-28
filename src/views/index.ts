@@ -3,6 +3,7 @@ import InitAlbum from "./Album";
 import InitArtist from "./Artist";
 import InitCollection from "./Collection";
 import InitDownload from "./Download";
+import InitSearch from "./Search";
 
 export default () => {
   InitPlaylist();
@@ -10,4 +11,5 @@ export default () => {
   InitArtist();
   InitCollection();
   InitDownload();
+  InitSearch();
 }

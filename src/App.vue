@@ -49,6 +49,11 @@ export default defineComponent({
       );
 
       API.player.recentlyPlayed();
+
+      API.search({
+        q: "s",
+        type: "show"
+      })
     });
 
     return {};
