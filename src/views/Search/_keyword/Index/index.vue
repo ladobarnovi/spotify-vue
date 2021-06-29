@@ -1,10 +1,10 @@
 <template>
-  <div id="search-index">
+  <div class="search-keyword">
     <CardsRow
       v-if="artists"
       class="artists"
       title="Artists"
-      :to="`/search/${ keyword }/artists`"
+      :to="`/search/${keyword}/artists`"
       :single-line="true"
       :data="artists"
     />
@@ -12,7 +12,7 @@
       v-if="albums"
       class="albums"
       title="Albums"
-      :to="`/search/${ keyword }/albums`"
+      :to="`/search/${keyword}/albums`"
       :single-line="true"
       :data="albums"
     />
@@ -20,7 +20,7 @@
       v-if="playlists"
       class="playlists"
       title="Playlists"
-      :to="`/search/${ keyword }/playlists`"
+      :to="`/search/${keyword}/playlists`"
       :single-line="true"
       :data="playlists"
     />
@@ -28,7 +28,7 @@
       v-if="shows"
       class="shows"
       title="Shows"
-      :to="`/search/${ keyword }/shows`"
+      :to="`/search/${keyword}/shows`"
       :single-line="true"
       :data="shows"
     />
@@ -36,10 +36,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, watch } from "vue";
+import { defineComponent, toRefs } from "vue";
 import { useSearch } from "@/hooks/search";
-import { API } from "@/api";
-import CardsRow from "@/components/Cards/CardsRow.vue";
+import CardsRow from "@/components/Cards/CardsRow";
 
 export default defineComponent({
   components: { CardsRow },
@@ -47,17 +46,15 @@ export default defineComponent({
     const { searchData, keyword } = useSearch();
 
     return {
-      keyword,
-      ...toRefs(searchData)
+      ...toRefs(searchData),
+      keyword
     };
   }
 });
 </script>
 
-<style lang="scss" scoped>
-#search-index {
-  padding: 60px 32px 32px;
-
+<style scoped lang="scss">
+.search-keyword {
   .cards-row {
     &:not(:last-child) {
       margin-bottom: 32px;

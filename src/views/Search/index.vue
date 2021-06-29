@@ -15,13 +15,37 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script lang="ts">
+import { defineComponent, watch } from "vue";
+import { useRouter } from "vue-router";
 import { useSearch } from "@/hooks/search";
+import { API } from "@/api";
 
 export default defineComponent({
   setup() {
-    const { keyword } = useSearch();
+    let timeoutId: number = null;
+
+    const { push } = useRouter();
+    const { keyword, setSearchData } = useSearch();
+
+    watch(keyword, () => {
+      clearTimeout(timeoutId);
+
+      timeoutId = setTimeout(async () => {
+        const res = await API.search({
+          q: keyword.value,
+          type: "album,track,artist,show,playlist,episode"
+        });
+
+        if (!keyword.value) {
+          await push(`/search`);
+          return;
+        }
+
+        await push(`/search/${keyword.value}`);
+        setSearchData(res);
+      }, 100);
+    });
 
     return {
       keyword

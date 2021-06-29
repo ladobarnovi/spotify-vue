@@ -2,7 +2,11 @@
   <div class="cards-row" :class="{ singleLine }">
     <header>
       <p class="title">{{ title }}</p>
-      <LinkUnderline v-if="hasMore && to && singleLine" :to="to" class="see-all">
+      <LinkUnderline
+        v-if="hasMore && to && singleLine"
+        :to="to"
+        class="see-all"
+      >
         <span>See All</span>
       </LinkUnderline>
     </header>
@@ -122,6 +126,7 @@ export default defineComponent({
       font-weight: 700;
       line-height: 28px;
       letter-spacing: -0.04em;
+      text-transform: capitalize;
     }
 
     .see-all {
@@ -129,7 +134,7 @@ export default defineComponent({
       font-size: 12px;
       font-weight: 700;
       line-height: 16px;
-      letter-spacing: .1em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
     }
   }
