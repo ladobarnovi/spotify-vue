@@ -38,7 +38,7 @@
 <script lang="ts">
 import { defineComponent, toRefs } from "vue";
 import { useSearch } from "@/hooks/search";
-import CardsRow from "@/components/Cards/CardsRow";
+import CardsRow from "@/components/Cards/CardsRow.vue";
 
 export default defineComponent({
   components: { CardsRow },

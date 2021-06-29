@@ -3,11 +3,12 @@ import { Album, Artist, Playlist, Podcast, Track } from "@/models";
 import { SearchResponse } from "@/api/search";
 
 interface SearchData {
-  albums: Album[];
-  tracks: Track[];
-  playlists: Playlist[];
-  artists: Artist[];
-  shows: Podcast[];
+  // albums: Album[];
+  // tracks: Track[];
+  // playlists: Playlist[];
+  // artists: Artist[];
+  // shows: Podcast[];
+  [key: string]: Album[] | Track[] | Playlist[] | Artist[] | Podcast
 }
 
 const keyword = ref<string>(null);
@@ -25,9 +26,7 @@ function setSearchData(d: SearchResponse): void {
   }
 
   for (const key in d) {
-    console.log(key);
-    console.log(d[key as keyof SearchResponse].items)
-    searchData[key as keyof SearchData] = d[key as keyof SearchResponse]
+    searchData[key as string] = d[key as keyof SearchResponse]
       .items as any;
   }
 }

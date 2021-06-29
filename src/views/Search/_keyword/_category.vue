@@ -1,10 +1,6 @@
 <template>
   <div>
-    <CardsRow
-      :title="category"
-      :data="data"
-      :single-line="false"
-    />
+    <CardsRow :title="category" :data="data" :single-line="false" />
   </div>
 </template>
 
@@ -12,10 +8,10 @@
 import { defineComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useSearch } from "@/hooks/search";
-import CardsRow from "@/components/Cards/CardsRow";
+import CardsRow from "@/components/Cards/CardsRow.vue";
 
 export default defineComponent({
-  components: {CardsRow},
+  components: { CardsRow },
   setup() {
     const allowedParams = [
       "artists",
@@ -30,11 +26,11 @@ export default defineComponent({
     const { params } = useRoute();
     const { searchData } = useSearch();
 
-    if (!allowedParams.includes(params.category)) {
+    if (!allowedParams.includes(params.category as string)) {
       push("/search");
     }
-
-    data.value = searchData[params.category];
+    
+    data.value = searchData[params.category as string];
 
     if (!data.value) {
       push("/search");

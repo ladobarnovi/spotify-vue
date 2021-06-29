@@ -16,6 +16,7 @@
         >
           {{ name }}
         </p>
+        <p class="publisher" v-if="publisher" v-html="publisher"></p>
         <p class="description" v-if="description" v-html="description"></p>
 
         <div class="group">
@@ -41,7 +42,7 @@
             <p class="likes">{{ followers }} likes</p>
           </template>
 
-          <template v-if="tracks.length > 0">
+          <template v-if="tracks?.length > 0">
             <BulletSeparator />
             <p class="songs">{{ duration }}</p>
           </template>
@@ -89,6 +90,9 @@ export default defineComponent({
     },
     artists: {
       type: Array as () => Artist[]
+    },
+    publisher: {
+      type: String
     }
   },
   setup(props) {
@@ -215,6 +219,13 @@ header {
         & /deep/ a {
           color: white;
         }
+      }
+
+      .publisher {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 28px;
+        margin-top: 8px;
       }
 
       .group {

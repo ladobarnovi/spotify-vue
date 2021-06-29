@@ -6,6 +6,7 @@ import artist from "./artist";
 import browse from "./browse";
 import search from "./search";
 import player from "./player";
+import shows from "./shows";
 
 export const API = {
   me,
@@ -15,7 +16,8 @@ export const API = {
   artist,
   browse,
   search,
-  player
+  player,
+  shows
 }
 
 console.log(API);

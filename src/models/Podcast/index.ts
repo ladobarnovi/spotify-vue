@@ -20,3 +20,26 @@ export interface Podcast {
   type: ItemType;
   uri: string;
 }
+
+export interface Episode {
+  audio_preview_url: string;
+  description: string;
+  duration_ms: number;
+  explicit: boolean;
+  external_urls: {
+    [key: string]: string;
+  };
+  href: string;
+  html_description: string;
+  id: string;
+  images: Image[];
+  is_externally_hosted: boolean;
+  is_playable: boolean;
+  language: string;
+  languages: string[];
+  name: string;
+  release_date: Date;
+  release_date_precision: string;
+  type: ItemType;
+  uri: string;
+}
