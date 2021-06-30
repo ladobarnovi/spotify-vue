@@ -1,5 +1,5 @@
 <template>
-  <div class="show-list-item">
+  <RouterLink tag="div" class="show-list-item" :to="`/episode/${episode.id}`">
     <div class="wrapper">
       <img :src="episode.images[1].url" :alt="episode.name" />
       <div class="info-wrapper">
@@ -9,7 +9,7 @@
         <p class="description">{{ episode.description }}</p>
       </div>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <script lang="ts">
@@ -37,11 +37,13 @@ export default defineComponent({
 .show-list-item {
   border-radius: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
 
   .wrapper {
     padding: 16px;
     margin: 0 -16px;
     display: flex;
+    border-radius: 4px;
 
     img {
       width: 112px;
@@ -70,6 +72,14 @@ export default defineComponent({
         line-height: 16px;
         color: #b3b3b3;
       }
+    }
+  }
+
+  &:hover {
+    border-top-color: transparent;
+
+    .wrapper {
+      background-color: hsla(0, 0%, 100%, 0.1);
     }
   }
 }

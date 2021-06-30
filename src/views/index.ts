@@ -5,6 +5,7 @@ import InitCollection from "./Collection";
 import InitDownload from "./Download";
 import InitSearch from "./Search";
 import InitShows from "./Show";
+import InitEpisodes from "./Episode";
 
 export default () => {
   InitPlaylist();
@@ -14,4 +15,5 @@ export default () => {
   InitDownload();
   InitSearch();
   InitShows();
-}
+  InitEpisodes();
+};

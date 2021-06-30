@@ -1,8 +1,8 @@
-import { onMounted, Ref, ref, watch } from "vue";
-import {useToggle} from "@/hooks/toggle";
+import { onMounted, Ref, watch } from "vue";
+import { useToggle } from "@/hooks/toggle";
 
 export const useFocusOutAction = (el: Ref) => {
-  const {active, setActive, toggle} = useToggle();
+  const { active, setActive, toggle } = useToggle();
 
   const focusOutHandler = (event: MouseEvent) => {
     if (!event.composedPath().includes(el.value)) {

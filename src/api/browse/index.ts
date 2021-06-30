@@ -1,5 +1,5 @@
-import {apiCall} from "@/api/utils";
-import {Playlist} from "@/models";
+import { apiCall } from "@/api/utils";
+import { Playlist } from "@/models";
 
 export default {
   newReleases: (params?: any) =>
@@ -15,11 +15,10 @@ export default {
       method: "get",
       params
     })
-}
-
+};
 
 interface FeaturedPlaylistsResponse {
   playlists: {
-    items: Playlist[]
-  }
+    items: Playlist[];
+  };
 }

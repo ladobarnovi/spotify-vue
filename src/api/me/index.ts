@@ -6,7 +6,8 @@ import {
   Podcast,
   OwnerType,
   Playlist,
-  Track, PlaylistTrackItem
+  Track,
+  PlaylistTrackItem
 } from "@/models";
 
 export default {
@@ -61,6 +62,13 @@ export default {
   showsGet: (params?: any) =>
     apiCall<MyShowsResponse>({
       url: "/me/shows",
+      method: "get",
+      params
+    }),
+
+  episodesGet: (params: { id: string }) =>
+    apiCall({
+      url: "/me/episodes",
       method: "get",
       params
     })

@@ -12,14 +12,17 @@
 
       <div class="main-wrapper">
         <div class="episode-list">
-          <div class="episode-list-title">All Episodes</div>
+          <p class="episode-list-title">All Episodes</p>
           <ShowListItem
-              v-for="(episode, index) of episodes"
-              :episode="episode"
-              :key="index"
+            v-for="(episode, index) of episodes"
+            :episode="episode"
+            :key="index"
           />
         </div>
-        <div class="description"></div>
+        <div class="description">
+          <p class="description-title">About</p>
+          <MoreLessText :text="show.description" />
+        </div>
       </div>
     </main>
   </div>
@@ -32,9 +35,11 @@ import TrackListHeader from "@/components/TrackList/TrackListHeader/index.vue";
 import { API } from "@/api";
 import { Podcast, Episode } from "@/models";
 import ShowListItem from "@/views/Show/components/ShowListItem.vue";
+import MoreLessText from "@/components/Common/MoreLessText.vue";
 
 export default defineComponent({
   components: {
+    MoreLessText,
     TrackListHeader,
     ShowListItem
   },
@@ -63,6 +68,7 @@ main {
 
   .main-wrapper {
     display: flex;
+    max-width: 1536px;
   }
 
   .follow {
@@ -70,7 +76,8 @@ main {
   }
 
   .episode-list {
-    flex-grow: 2;
+    margin-right: 16px;
+    flex-grow: 1;
 
     .episode-list-title {
       font-size: 24px;
@@ -82,8 +89,24 @@ main {
   }
 
   .description {
-    flex-grow: 1;
+    flex-basis: 32%;
     margin-left: 4%;
+    flex-shrink: 0;
+
+    .description-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 28px;
+      padding: 16px 0;
+    }
+
+    .description-body {
+      color: #b3b3b3;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+    }
   }
 }
 </style>

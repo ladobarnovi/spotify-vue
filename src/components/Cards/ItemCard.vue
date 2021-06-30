@@ -48,8 +48,6 @@ export default defineComponent({
       return moment((props.data as Album).release_date).format("YYYY");
     });
 
-    console.log(props.data)
-
     function redirect() {
       switch (props.data.type as ItemType) {
         case "album":
@@ -60,6 +58,9 @@ export default defineComponent({
           break;
         case "playlist":
           push(`/playlist/${props.data.id}`);
+          break;
+        case "show":
+          push(`/show/${props.data.id}`);
           break;
         default:
           break;
