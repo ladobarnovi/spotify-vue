@@ -179,7 +179,8 @@ export const usePlayer = () => {
     toggleShuffle,
     toggleRepeat,
     toggleVolume,
-    setVolume
+    setVolume,
+    deviceId
   };
 };
 

@@ -1,10 +1,12 @@
 <template>
-  <div class="track-item" :class="{ playing: isPlaying && isCurrentTrack, paused: isPaused && isCurrentTrack }">
-    <TrackItemStatus
-      @play="play"
-      :is-playing="isPlaying"
-      :is-current-track="isCurrentTrack"
-    />
+  <div
+    class="track-item"
+    :class="{
+      playing: isPlaying && isCurrentTrack,
+      paused: isPaused && isCurrentTrack
+    }"
+  >
+    <TrackItemStatus @play="play" />
     <TrackItemTitle
       :image="data.track?.album?.images[2]?.url"
       :name="data.track.name"
@@ -25,7 +27,7 @@ import TrackItemTitle from "../TrackItemTitle.vue";
 import TrackItemAlbum from "../TrackItemAlbum.vue";
 import TrackItemDate from "../TrackItemDate.vue";
 import TrackItemDuration from "../TrackItemDuration.vue";
-import {usePlayer, usePlayerStatus, usePlayerTrackData} from "@/hooks/player";
+import { usePlayer, usePlayerStatus, usePlayerTrackData } from "@/hooks/player";
 
 export default defineComponent({
   components: {

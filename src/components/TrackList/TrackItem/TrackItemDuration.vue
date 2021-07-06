@@ -78,7 +78,12 @@ export default defineComponent({
         &.hollow {
           opacity: var(--opacity);
         }
+      }
+    }
 
+    .ellipsis {
+      img {
+        opacity: var(--opacity);
       }
     }
   }

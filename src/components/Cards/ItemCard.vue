@@ -1,12 +1,11 @@
 <template>
-  <div
-    class="item-card"
-    :class="{ playing: isPlaying && isCurrentContext }"
-    @click="redirect"
-  >
-    <div class="image-container">
-      <img v-if="data.images.length > 0" :src="data.images[0].url" />
-      <img v-else class="blank-image" src="@/assets/icons/note.svg" />
+  <div class="item-card" :class="itemClass" @click="redirect">
+    <div class="top-container">
+      <div class="image-container">
+        <img v-if="data.images.length > 0" :src="data.images[0].url" />
+        <img v-else class="blank-image" src="@/assets/icons/note.svg" />
+      </div>
+
       <div v-if="canPlay" class="play-container" @click.stop>
         <div v-if="isPlaying && isCurrentContext" class="pause" @click="pause">
           <img src="@/assets/icons/pause.svg" />
@@ -46,6 +45,7 @@ import { Album, Artist, Track, Playlist, Podcast } from "@/models";
 import moment from "moment";
 import { useRouter } from "vue-router";
 import { usePlayer, usePlayerStatus, usePlayerTrackData } from "@/hooks/player";
+import { API } from "@/api";
 
 export default defineComponent({
   props: {
@@ -57,7 +57,7 @@ export default defineComponent({
 
   setup(props) {
     const { push } = useRouter();
-    const { togglePlay, playPlaylist } = usePlayer();
+    const { togglePlay, playPlaylist, deviceId } = usePlayer();
     const { contextUri: activeContext } = usePlayerTrackData();
     const { isPlaying } = usePlayerStatus();
     const releaseDate = computed(() => {
@@ -72,17 +72,34 @@ export default defineComponent({
       () => props.data.uri === activeContext.value
     );
 
+    const itemClass = computed(() => {
+      return `${isPlaying.value && isCurrentContext.value ? "playing" : ""} ${
+        props.data.type
+      }`;
+    });
+
     function redirect() {
       if (props.data.type) {
         push(`/${props.data.type}/${props.data.id}`);
       }
     }
 
-    function play() {
+    async function play() {
       if (isCurrentContext.value) {
-        togglePlay();
+        await togglePlay();
       } else {
-        playPlaylist(props.data.uri);
+        if (props.data.type === "artist") {
+          // Fetch Top Tracks & Put In Player
+          const res = await API.artist.topTracks(props.data.id);
+          const uris = res.tracks.map(t => t.uri);
+
+          await API.player.play(deviceId.value, {
+            uris
+          });
+        } else {
+          // Play with URI
+          await playPlaylist(props.data.uri);
+        }
       }
     }
 
@@ -97,7 +114,8 @@ export default defineComponent({
       pause,
       isPlaying,
       isCurrentContext,
-      canPlay
+      canPlay,
+      itemClass
     };
   }
 });
@@ -116,7 +134,7 @@ export default defineComponent({
   &.playing {
     background-color: #282828;
 
-    .image-container {
+    .top-container {
       .play-container {
         transform: translate(0, 0);
         opacity: 1;
@@ -125,33 +143,39 @@ export default defineComponent({
   }
 
   &.artist {
-    .image-container {
-      border-radius: 50%;
-      overflow: hidden;
+    .top-container {
+      .image-container {
+        border-radius: 50%;
+        overflow: hidden;
+      }
     }
   }
 
-  .image-container {
-    width: 100%;
-    background-color: #333;
-    padding-bottom: 100%;
-    border-radius: 2px;
-    overflow: hidden;
+  .top-container {
     position: relative;
-    margin-bottom: 16px;
-    box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.5);
 
-    img {
-      position: absolute;
-      top: 0;
-      left: 0;
+    .image-container {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
+      background-color: #333;
+      padding-bottom: 100%;
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 
-      &.blank-image {
-        opacity: 0.6;
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+
+        &.blank-image {
+          opacity: 0.6;
+        }
       }
     }
 

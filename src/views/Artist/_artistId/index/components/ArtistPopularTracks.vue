@@ -6,6 +6,8 @@
       v-for="(track, index) in trackList"
       :key="index"
       :data="{ track }"
+      @play="play(index)"
+      @pause="togglePlay"
     />
 
     <p v-if="tracks.length > 5" @click="toggle" class="toggle-more">
@@ -20,6 +22,8 @@ import { defineComponent, computed } from "vue";
 import { Track } from "@/models/Track";
 import TopTrackItem from "@/components/TrackList/TrackItem/TopTrackItem/index.vue";
 import { useToggle } from "@/hooks/toggle";
+import {API} from "@/api";
+import {usePlayer} from "@/hooks/player";
 
 export default defineComponent({
   components: {
@@ -33,16 +37,30 @@ export default defineComponent({
   },
   setup(props) {
     const { active: more, toggle } = useToggle();
+    const { deviceId, togglePlay } = usePlayer();
 
     const trackList = computed(() => {
       if (more.value) return props.tracks.slice(0, 10);
       else return props.tracks.slice(0, 5);
     });
 
+    function play(position: number) {
+      const uris = props.tracks.map(t => t.uri);
+
+      API.player.play(deviceId.value, {
+        uris,
+        offset: {
+          position
+        }
+      });
+    }
+
     return {
       trackList,
       more,
-      toggle
+      toggle,
+      play,
+      togglePlay
     };
   }
 });

@@ -1,6 +1,8 @@
 <template>
-  <div class="track-item">
-    <TrackItemStatus />
+  <div class="track-item" :class="{ playing: isPlaying && isCurrentTrack, paused: isPaused && isCurrentTrack }">
+    <TrackItemStatus
+      @play="play"
+    />
     <TrackItemTitle
       :image="data.track.album.images[2].url"
       :name="data.track.name"
@@ -11,12 +13,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import { PlaylistTrackItem } from "@/models";
 import TrackItemStatus from "../TrackItemStatus.vue";
 import TrackItemTitle from "../TrackItemTitle.vue";
 import TrackItemDuration from "../TrackItemDuration.vue";
 import TrackItemListens from "../TrackItemListens.vue";
+import { usePlayerStatus, usePlayerTrackData } from "@/hooks/player";
 
 export default defineComponent({
   components: {
@@ -31,8 +34,28 @@ export default defineComponent({
       required: true
     }
   },
-  setup() {
-    return {};
+  setup(props, ctx) {
+    const { isPlaying, isPaused } = usePlayerStatus();
+    const { trackId } = usePlayerTrackData();
+
+    const isCurrentTrack = computed(
+      () => trackId.value === props.data.track.id
+    );
+
+    function play() {
+      if (isCurrentTrack.value && (isPaused.value || isPlaying.value)) {
+        ctx.emit("toggle");
+      } else {
+        ctx.emit("play");
+      }
+    }
+
+    return {
+      isPlaying,
+      isCurrentTrack,
+      isPaused,
+      play
+    };
   }
 });
 </script>

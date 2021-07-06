@@ -15,14 +15,6 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  props: {
-    isPlaying: {
-      type: Boolean
-    },
-    isCurrentTrack: {
-      type: Boolean
-    }
-  },
   setup() {
     return {};
   }
