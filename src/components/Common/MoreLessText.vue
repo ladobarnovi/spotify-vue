@@ -1,7 +1,7 @@
 <template>
   <div class="more-less-text">
     <span>{{ visibleText }}</span>
-    <button @click="toggle">
+    <button @click="toggle" v-if="visibleText.length >= 150">
       <span v-if="active">show less</span>
       <span v-else>... see more</span>
     </button>

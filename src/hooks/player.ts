@@ -52,7 +52,7 @@ const initPlayer = () => {
       player.value.getVolume().then(r => console.log(r));
       const activeDevice = devices.find(d => d.is_active);
       if (activeDevice) {
-        // API.player.put([deviceId.value]);
+        API.player.put([deviceId.value]);
       }
     });
 

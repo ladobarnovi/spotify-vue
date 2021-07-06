@@ -131,9 +131,15 @@ export default defineComponent({
 
 <style scoped lang="scss">
 header {
+  --image-size: 232px;
+  --image-border-radius: 0px;
+
   padding: 84px 32px 24px;
   min-height: 340px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 
   &:after {
     content: "";
@@ -152,10 +158,13 @@ header {
     align-items: flex-end;
     position: relative;
     z-index: 1;
+    width: 100%;
 
     .image-container {
-      width: 232px;
-      height: 232px;
+      width: var(--image-size);
+      height: var(--image-size);
+      border-radius: var(--image-border-radius);
+      overflow: hidden;
       margin-right: 24px;
       flex-shrink: 0;
       box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.5);

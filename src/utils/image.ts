@@ -31,18 +31,16 @@ export async function imageColor(imgUrl: string) {
   let r = 0;
   let g = 0;
   let b = 0;
-
-  let zerocount = 0;
   let counter = 0;
 
   for (let i = 0, length = imgData.data.length; i < length; i += 4) {
+    // if (imgData.data[i] === imgData.data[i + 1] && imgData.data[i] === imgData.data[i + 2]) {
+    //   continue;
+    // }
+
     r += imgData.data[i];
     g += imgData.data[i + 1];
     b += imgData.data[i + 2];
-
-    if (imgData.data[i] === 0) {
-      zerocount++;
-    }
 
     counter++;
   }

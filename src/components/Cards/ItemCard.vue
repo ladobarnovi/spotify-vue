@@ -1,8 +1,20 @@
 <template>
-  <div class="item-card" :class="data.type" @click="redirect">
+  <div
+    class="item-card"
+    :class="{ playing: isPlaying && isCurrentContext }"
+    @click="redirect"
+  >
     <div class="image-container">
       <img v-if="data.images.length > 0" :src="data.images[0].url" />
       <img v-else class="blank-image" src="@/assets/icons/note.svg" />
+      <div v-if="canPlay" class="play-container" @click.stop>
+        <div v-if="isPlaying && isCurrentContext" class="pause" @click="pause">
+          <img src="@/assets/icons/pause.svg" />
+        </div>
+        <div v-else class="play" @click="play">
+          <img src="@/assets/icons/play.svg" />
+        </div>
+      </div>
     </div>
 
     <div class="titles">
@@ -30,9 +42,10 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { Album, Artist, ItemType, Track, Playlist, Podcast } from "@/models";
+import { Album, Artist, Track, Playlist, Podcast } from "@/models";
 import moment from "moment";
 import { useRouter } from "vue-router";
+import { usePlayer, usePlayerStatus, usePlayerTrackData } from "@/hooks/player";
 
 export default defineComponent({
   props: {
@@ -44,32 +57,47 @@ export default defineComponent({
 
   setup(props) {
     const { push } = useRouter();
+    const { togglePlay, playPlaylist } = usePlayer();
+    const { contextUri: activeContext } = usePlayerTrackData();
+    const { isPlaying } = usePlayerStatus();
     const releaseDate = computed(() => {
       return moment((props.data as Album).release_date).format("YYYY");
     });
+    const canPlay = (() =>
+      props.data.type === "playlist" ||
+      props.data.type === "artist" ||
+      props.data.type === "album")();
+
+    const isCurrentContext = computed(
+      () => props.data.uri === activeContext.value
+    );
 
     function redirect() {
-      switch (props.data.type as ItemType) {
-        case "album":
-          push(`/album/${props.data.id}`);
-          break;
-        case "artist":
-          push(`/artist/${props.data.id}`);
-          break;
-        case "playlist":
-          push(`/playlist/${props.data.id}`);
-          break;
-        case "show":
-          push(`/show/${props.data.id}`);
-          break;
-        default:
-          break;
+      if (props.data.type) {
+        push(`/${props.data.type}/${props.data.id}`);
       }
+    }
+
+    function play() {
+      if (isCurrentContext.value) {
+        togglePlay();
+      } else {
+        playPlaylist(props.data.uri);
+      }
+    }
+
+    function pause() {
+      togglePlay();
     }
 
     return {
       releaseDate,
-      redirect
+      redirect,
+      play,
+      pause,
+      isPlaying,
+      isCurrentContext,
+      canPlay
     };
   }
 });
@@ -84,8 +112,16 @@ export default defineComponent({
   transition: background-color 0.3s ease;
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &.playing {
     background-color: #282828;
+
+    .image-container {
+      .play-container {
+        transform: translate(0, 0);
+        opacity: 1;
+      }
+    }
   }
 
   &.artist {
@@ -116,6 +152,43 @@ export default defineComponent({
 
       &.blank-image {
         opacity: 0.6;
+      }
+    }
+
+    .play-container {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform: translate(0, 4px);
+      width: 40px;
+      height: 40px;
+      opacity: 0;
+
+      .play,
+      .pause {
+        width: 100%;
+        height: 100%;
+        transition: transform 0.3s ease;
+        background-color: #1db954;
+        border-radius: 50%;
+
+        img {
+          width: 16px;
+          height: 16px;
+          position: relative;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      &:hover,
+      &.active {
+        .play,
+        .pause {
+          transform: scale(1.06);
+        }
       }
     }
   }
